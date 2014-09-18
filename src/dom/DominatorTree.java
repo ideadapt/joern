@@ -1,6 +1,6 @@
-package cdg;
+package dom;
 
-import graphutils.AbstractTwoWayGraph;
+import graphutils.IncidenceListGraph;
 import graphutils.Edge;
 import graphutils.PostorderIterator;
 
@@ -29,7 +29,7 @@ public class DominatorTree<V>
 	}
 
 	public static <V, E extends Edge<V>> DominatorTree<V> newInstance(
-			AbstractTwoWayGraph<V, E> graph, V startNode)
+			IncidenceListGraph<V, E> graph, V startNode)
 	{
 		return new DominatorTreeCreator<V, E>(graph, startNode).create();
 	}
@@ -139,11 +139,11 @@ public class DominatorTree<V>
 	{
 
 		private DominatorTree<V> dominatorTree;
-		private AbstractTwoWayGraph<V, E> graph;
+		private IncidenceListGraph<V, E> graph;
 		private List<V> orderedVertices;
 		private V startNode;
 
-		public DominatorTreeCreator(AbstractTwoWayGraph<V, E> graph, V startNode)
+		public DominatorTreeCreator(IncidenceListGraph<V, E> graph, V startNode)
 		{
 			this.dominatorTree = new DominatorTree<V>();
 			this.graph = graph;

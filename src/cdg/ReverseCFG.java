@@ -1,6 +1,6 @@
 package cdg;
 
-import graphutils.AbstractTwoWayGraph;
+import graphutils.IncidenceListGraph;
 import cfg.CFG;
 import cfg.CFGEdge;
 import cfg.nodes.CFGNode;
@@ -12,7 +12,7 @@ import cfg.nodes.CFGNode;
  * @param <V>
  *            the vertex type
  */
-public class ReverseCFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
+public class ReverseCFG extends IncidenceListGraph<CFGNode, CFGEdge>
 {
 
 	private CFGNode entry;

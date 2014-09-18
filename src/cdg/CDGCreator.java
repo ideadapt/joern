@@ -2,6 +2,7 @@ package cdg;
 
 import cfg.CFG;
 import cfg.nodes.CFGNode;
+import dom.DominatorTree;
 
 public class CDGCreator
 {

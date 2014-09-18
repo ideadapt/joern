@@ -1,12 +1,13 @@
 package cdg;
 
-import graphutils.AbstractGraph;
+import graphutils.IncidenceListGraph;
 
 import java.util.Set;
 
 import cfg.nodes.CFGNode;
+import dom.DominatorTree;
 
-public class CDG extends AbstractGraph<CFGNode, CDGEdge>
+public class CDG extends IncidenceListGraph<CFGNode, CDGEdge>
 {
 
 	private DominatorTree<CFGNode> dominatorTree;

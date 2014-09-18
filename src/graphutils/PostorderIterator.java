@@ -9,11 +9,11 @@ import java.util.NoSuchElementException;
 public class PostorderIterator<V, E extends Edge<V>> implements Iterator<V>
 {
 
-	private AbstractGraph<V, E> graph;
+	private IncidenceListGraph<V, E> graph;
 	Deque<V> remainingNodes;
 	List<V> visitedNodes;
 
-	public PostorderIterator(AbstractGraph<V, E> graph, V root)
+	public PostorderIterator(IncidenceListGraph<V, E> graph, V root)
 	{
 		this.graph = graph;
 		this.remainingNodes = new LinkedList<V>();

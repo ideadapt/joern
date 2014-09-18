@@ -8,10 +8,10 @@ import org.neo4j.graphdb.RelationshipType;
 
 import cdg.CDG;
 import cdg.CDGEdge;
-import cdg.DominatorTree;
 import cfg.nodes.ASTNodeContainer;
 import cfg.nodes.CFGNode;
 import databaseNodes.EdgeTypes;
+import dom.DominatorTree;
 
 public class CDGImporter
 {

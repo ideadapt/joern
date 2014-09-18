@@ -1,9 +1,6 @@
 package cfg;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import graphutils.AbstractTwoWayGraph;
+import graphutils.IncidenceListGraph;
 import cfg.nodes.CFGEntryNode;
 import cfg.nodes.CFGErrorNode;
 import cfg.nodes.CFGExitNode;
@@ -15,7 +12,7 @@ import cfg.nodes.CFGNode;
  * of the CFG into a sub-class.
  * */
 
-public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
+public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 {
 	private CFGEntryNode entry;
 	private CFGExitNode exit;
