@@ -46,4 +46,21 @@ public class DomImporter
 					rel, null);
 		}
 	}
+
+	public void addPostDomToDatabse(DominatorTree<CFGNode> postDominatorTree)
+	{
+		RelationshipType rel;
+
+		// Add post dominator edges
+		rel = DynamicRelationshipType.withName(EdgeTypes.POST_DOM);
+		for (CFGNode vertex : postDominatorTree.getVertices())
+		{
+			if (postDominatorTree.hasDominator(vertex))
+			{
+				CFGNode dominator = postDominatorTree.getDominator(vertex);
+				Neo4JBatchInserter.addRelationship(getId(dominator),
+						getId(vertex), rel, null);
+			}
+		}
+	}
 }

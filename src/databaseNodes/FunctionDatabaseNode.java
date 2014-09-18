@@ -31,6 +31,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 	DDG ddg;
 	CDG cdg;
 	DominatorTree<CFGNode> dom;
+	DominatorTree<CFGNode> postDom;
 
 	String signature;
 	String name;
@@ -47,6 +48,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 		astRoot = (FunctionDef) node;
 		cfg = astToCFG.convert(astRoot);
 		dom = DominatorTree.newInstance(cfg, cfg.getEntryNode());
+		postDom = DominatorTree.newInstance(cfg.reverse(), cfg.getExitNode());
 		udg = cfgToUDG.convert(cfg);
 		DefUseCFG defUseCFG = udgAndCfgToDefUseCFG.convert(cfg, udg);
 		ddg = ddgCreator.createForDefUseCFG(defUseCFG);
@@ -119,6 +121,11 @@ public class FunctionDatabaseNode extends DatabaseNode
 	private void setSignature(FunctionDef node)
 	{
 		signature = node.getFunctionSignature();
+	}
+
+	public DominatorTree<CFGNode> getPostDominatorTree()
+	{
+		return postDom;
 	}
 
 }
