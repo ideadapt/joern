@@ -41,4 +41,6 @@ public class EdgeTypes
 
 	public static final String CONTROLS = "CONTROLS";
 
+	public static final String DOM = "DOM";
+
 }

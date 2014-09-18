@@ -25,6 +25,7 @@ public class FunctionImporter extends ASTNodeImporter
 	UDGImporter udgImporter = new UDGImporter(nodeStore);
 	DDGImporter ddgImporter = new DDGImporter(nodeStore);
 	CDGImporter cdgImporter = new CDGImporter(nodeStore);
+	DomImporter domImporter = new DomImporter(nodeStore);
 
 	public void addToDatabaseSafe(ASTNode node)
 	{
@@ -60,6 +61,7 @@ public class FunctionImporter extends ASTNodeImporter
 		udgImporter.addUDGToDatabase(function.getUDG());
 		ddgImporter.addDDGToDatabase(function.getDDG());
 		cdgImporter.addCDGToDatabase(function.getCDG());
+		domImporter.addDomToDatabase(function.getDominatorTree());
 
 		linkFunctionToASTAndCFG(function);
 
