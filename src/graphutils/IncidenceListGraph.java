@@ -53,11 +53,6 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 		return this.vertices.contains(vertex);
 	}
 
-	public Iterator<E> edgeIterator()
-	{
-		return getEdges().iterator();
-	}
-
 	private void failIfNotContained(V vertex)
 	{
 		if (!contains(vertex))
@@ -82,28 +77,29 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 		return vertices;
 	}
 
-	public Collection<V> in(V vertex)
+	public Collection<E> incomingEdges(V vertex)
 	{
 		failIfNotContained(vertex);
-		Collection<V> list = new LinkedList<V>();
-		for (E edge : ingoingEdges(vertex))
-		{
-			list.add(edge.getSource());
-		}
-		return list;
+		Collection<E> list = this.inNeighborhood.get(vertex);
+		return list == null ? new LinkedList<E>() : list;
 	}
 
 	public int inDegree(V vertex)
 	{
 		failIfNotContained(vertex);
-		return ingoingEdges(vertex).size();
+		return incomingEdges(vertex).size();
 	}
 
-	public Collection<E> ingoingEdges(V vertex)
+	public boolean isConnected(V source, V destination)
 	{
-		failIfNotContained(vertex);
-		Collection<E> list = this.inNeighborhood.get(vertex);
-		return list == null ? new LinkedList<E>() : list;
+		for (E edge : outgoingEdges(source))
+		{
+			if (edge.getDestination().equals(destination))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isEmpty()
@@ -120,17 +116,6 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 	public int numberOfEdges()
 	{
 		return getEdges().size();
-	}
-
-	public Collection<V> out(V vertex)
-	{
-		failIfNotContained(vertex);
-		Collection<V> list = new LinkedList<V>();
-		for (E edge : outgoingEdges(vertex))
-		{
-			list.add(edge.getDestination());
-		}
-		return list;
 	}
 
 	public int outDegree(V vertex)
@@ -157,7 +142,7 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 				iterator.remove();
 			}
 		}
-		iterator = ingoingEdges(edge.getDestination()).iterator();
+		iterator = incomingEdges(edge.getDestination()).iterator();
 		while (iterator.hasNext())
 		{
 			if (iterator.next().equals(edge))
@@ -180,7 +165,7 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 				iterator.remove();
 			}
 		}
-		iterator = ingoingEdges(destination).iterator();
+		iterator = incomingEdges(destination).iterator();
 		while (iterator.hasNext())
 		{
 			if (iterator.next().getSource().equals(source))
@@ -189,6 +174,26 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 			}
 		}
 
+	}
+
+	public void removeEdgesFrom(V vertex)
+	{
+		List<E> removed = outNeighborhood.removeAll(vertex);
+		if (removed != null)
+		{
+			for (E edge : removed)
+			{
+				Iterator<E> iterator = incomingEdges(edge.getDestination())
+						.iterator();
+				while (iterator.hasNext())
+				{
+					if (iterator.next().getSource().equals(vertex))
+					{
+						iterator.remove();
+					}
+				}
+			}
+		}
 	}
 
 	public void removeEdgesTo(V vertex)
@@ -211,31 +216,28 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 		}
 	}
 
-	public void removeEdgesFrom(V vertex)
-	{
-		List<E> removed = outNeighborhood.removeAll(vertex);
-		if (removed != null)
-		{
-			for (E edge : removed)
-			{
-				Iterator<E> iterator = ingoingEdges(edge.getDestination())
-						.iterator();
-				while (iterator.hasNext())
-				{
-					if (iterator.next().getSource().equals(vertex))
-					{
-						iterator.remove();
-					}
-				}
-			}
-		}
-	}
-
 	public void removeVertex(V vertex)
 	{
 		removeEdgesFrom(vertex);
 		removeEdgesTo(vertex);
 		this.vertices.remove(vertex);
+	}
+
+	public IncidenceListGraph<V, Edge<V>> reverse()
+	{
+		IncidenceListGraph<V, Edge<V>> reverseGraph = new IncidenceListGraph<V, Edge<V>>();
+		for (V vertex : getVertices())
+		{
+			reverseGraph.addVertex(vertex);
+		}
+		for (V vertex : getVertices())
+		{
+			for (Edge<V> edge : outgoingEdges(vertex))
+			{
+				reverseGraph.addEdge(edge.reverse());
+			}
+		}
+		return reverseGraph;
 	}
 
 	public int size()
@@ -256,18 +258,6 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 			}
 		}
 		return res;
-	}
-
-	public boolean isConnected(V source, V destination)
-	{
-		for (E edge : outgoingEdges(source))
-		{
-			if (edge.getDestination().equals(destination))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

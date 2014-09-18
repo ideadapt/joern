@@ -167,7 +167,7 @@ public class DominatorTree<V>
 				if (graph.inDegree(currentNode) > 1)
 				{
 					V runner;
-					for (Edge<V> edge : graph.ingoingEdges(currentNode))
+					for (Edge<V> edge : graph.incomingEdges(currentNode))
 					{
 						V predecessor = edge.getSource();
 						if (!orderedVertices.contains(predecessor))
@@ -209,7 +209,7 @@ public class DominatorTree<V>
 				{
 					V currentNode = reverseVertexIterator.previous();
 					List<V> list = new LinkedList<V>();
-					for (Edge<V> edge : graph.ingoingEdges(currentNode))
+					for (Edge<V> edge : graph.incomingEdges(currentNode))
 					{
 						list.add(edge.getSource());
 					}

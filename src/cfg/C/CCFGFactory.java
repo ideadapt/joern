@@ -285,7 +285,7 @@ public class CCFGFactory extends CFGFactory
 				switchBlock.addEdge(conditionContainer, block.getValue(),
 						block.getKey());
 			}
-			for (CFGEdge edge : switchBody.ingoingEdges(switchBody
+			for (CFGEdge edge : switchBody.incomingEdges(switchBody
 					.getExitNode()))
 			{
 				switchBlock

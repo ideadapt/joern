@@ -2,7 +2,7 @@ package graphutils;
 
 import java.util.Map;
 
-public abstract class Edge<V>
+public class Edge<V>
 {
 
 	private V destination;
@@ -24,7 +24,10 @@ public abstract class Edge<V>
 		return this.source;
 	}
 
-	public abstract Map<String, Object> getProperties();
+	public Map<String, Object> getProperties()
+	{
+		return null;
+	}
 
 	@Override
 	public int hashCode()
@@ -76,6 +79,17 @@ public abstract class Edge<V>
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString()
+	{
+		return getSource() + " ====> " + getDestination();
+	}
+
+	public Edge<V> reverse()
+	{
+		return new Edge<V>(getDestination(), getSource());
 	}
 
 }

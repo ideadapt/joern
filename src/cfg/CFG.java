@@ -7,18 +7,17 @@ import cfg.nodes.CFGExitNode;
 import cfg.nodes.CFGNode;
 
 /**
- * Control Flow Graph. Consider this to be the target format
- * of CFGFactories. Please place language specific attributes
- * of the CFG into a sub-class.
+ * Control Flow Graph. Consider this to be the target format of CFGFactories.
+ * Please place language specific attributes of the CFG into a sub-class.
  * */
 
 public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 {
-	private CFGEntryNode entry;
-	private CFGExitNode exit;
-	private CFGErrorNode error;
 	private List<CFGNode> parameters;
-	
+	private CFGNode entry;
+	private CFGNode exit;
+	private CFGNode error;
+
 	public CFG()
 	{
 		entry = new CFGEntryNode();
@@ -28,7 +27,6 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 		parameters = new LinkedList<CFGNode>();
 	}
 
-	
 	@Override
 	public boolean isEmpty()
 	{
@@ -78,7 +76,7 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 		addCFG(otherCFG);
 		if (!otherCFG.isEmpty())
 		{
-			for (CFGEdge edge1 : ingoingEdges(getExitNode()))
+			for (CFGEdge edge1 : incomingEdges(getExitNode()))
 			{
 				for (CFGEdge edge2 : otherCFG.outgoingEdges(otherCFG
 						.getEntryNode()))
@@ -88,7 +86,7 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 				}
 			}
 			removeEdgesTo(getExitNode());
-			for (CFGEdge edge : otherCFG.ingoingEdges(otherCFG.getExitNode()))
+			for (CFGEdge edge : otherCFG.incomingEdges(otherCFG.getExitNode()))
 			{
 				addEdge(edge.getSource(), getExitNode(), edge.getLabel());
 			}
@@ -105,7 +103,7 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 			{
 				addEdge(branchNode, edge.getDestination(), label);
 			}
-			for (CFGEdge edge : cfg.ingoingEdges(cfg.getExitNode()))
+			for (CFGEdge edge : cfg.incomingEdges(cfg.getExitNode()))
 			{
 				addEdge(edge.getSource(), mergeNode, edge.getLabel());
 			}
@@ -154,6 +152,5 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 		CFGEdge edge = new CFGEdge(srcBlock, dstBlock, label);
 		addEdge(edge);
 	}
-
 
 }
