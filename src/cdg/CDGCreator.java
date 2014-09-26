@@ -15,8 +15,36 @@ public class CDGCreator
 		Edge<CFGNode> augment = new Edge<CFGNode>(cfg.getExitNode(),
 				cfg.getEntryNode());
 		reverseCfg.addEdge(augment);
-		DominatorTree<CFGNode> dominatorTree = DominatorTree.newInstance(
+		DominatorTree<CFGNode> postDominatorTree = DominatorTree.newInstance(
 				reverseCfg, cfg.getExitNode());
-		return CDG.newInstance(dominatorTree);
+
+		CDG cdg = new CDG();
+		for (CFGNode node : postDominatorTree.getVertices())
+		{
+			cdg.addVertex(node);
+		}
+		for (CFGNode node : postDominatorTree.getVertices())
+		{
+			if (reverseCfg.inDegree(node) > 1)
+			{
+				CFGNode runner;
+				for (Edge<CFGNode> edge : reverseCfg.incomingEdges(node))
+				{
+					CFGNode predecessor = edge.getSource();
+					if (cdg.contains(predecessor))
+					{
+
+						runner = predecessor;
+						while (!runner.equals(postDominatorTree
+								.getDominator(node)))
+						{
+							cdg.addEdge(node, runner);
+							runner = postDominatorTree.getDominator(runner);
+						}
+					}
+				}
+			}
+		}
+		return cdg;
 	}
 }

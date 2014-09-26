@@ -1,30 +1,26 @@
 package dom;
 
-import graphutils.IncidenceListGraph;
 import graphutils.Edge;
+import graphutils.IncidenceListGraph;
 import graphutils.PostorderIterator;
 
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 public class DominatorTree<V>
 {
 
 	private HashMap<V, V> dominators;
-	private HashMap<V, Set<V>> dominanceFrontiers;
 	private HashMap<V, Integer> postorderEnumeration;
 
-	private DominatorTree()
+	DominatorTree()
 	{
 		dominators = new HashMap<V, V>();
-		dominanceFrontiers = new HashMap<V, Set<V>>();
 		postorderEnumeration = new HashMap<V, Integer>();
 	}
 
@@ -44,10 +40,15 @@ public class DominatorTree<V>
 		return dominators.get(vertex);
 	}
 
-	public Set<V> dominanceFrontier(V vertex)
+	public int postorderNumber(V vertex)
 	{
-		return dominanceFrontiers.get(vertex);
+		return postorderEnumeration.get(vertex);
 	}
+
+	// public Set<V> dominanceFrontier(V vertex)
+	// {
+	// return dominanceFrontiers.get(vertex);
+	// }
 
 	private V commonDominator(List<V> vertices)
 	{
@@ -76,18 +77,15 @@ public class DominatorTree<V>
 		V finger2 = vertex2;
 		while (!finger1.equals(finger2))
 		{
-			while (postorderEnumeration.get(finger1) < postorderEnumeration
-					.get(finger2))
+			while (postorderNumber(finger1) < postorderNumber(finger2))
 			{
 				finger1 = getDominator(finger1);
 			}
-			while (postorderEnumeration.get(finger2) < postorderEnumeration
-					.get(finger1))
+			while (postorderNumber(finger2) < postorderNumber(finger1))
 			{
 				finger2 = getDominator(finger2);
 			}
 		}
-		assert finger1.equals(finger2) : "fingers do not match";
 		return finger1;
 	}
 
@@ -156,41 +154,7 @@ public class DominatorTree<V>
 			enumerateVertices();
 			initializeDominatorTree();
 			buildDominatorTree();
-			determineDominanceFrontiers();
 			return dominatorTree;
-		}
-
-		private void determineDominanceFrontiers()
-		{
-			for (V currentNode : orderedVertices)
-			{
-				if (graph.inDegree(currentNode) > 1)
-				{
-					V runner;
-					for (Edge<V> edge : graph.incomingEdges(currentNode))
-					{
-						V predecessor = edge.getSource();
-						if (!orderedVertices.contains(predecessor))
-						{
-							continue;
-						}
-						runner = predecessor;
-						while (!runner.equals(dominatorTree
-								.getDominator(currentNode)))
-						{
-							if (!dominatorTree.dominanceFrontiers
-									.containsKey(runner))
-							{
-								dominatorTree.dominanceFrontiers.put(runner,
-										new HashSet<V>());
-							}
-							dominatorTree.dominanceFrontiers.get(runner).add(
-									currentNode);
-							runner = dominatorTree.getDominator(runner);
-						}
-					}
-				}
-			}
 		}
 
 		private void buildDominatorTree()
