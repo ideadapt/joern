@@ -12,6 +12,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import cfg.CFG;
+import cfg.CFGEdge;
+import cfg.nodes.CFGNode;
+
 public class DominatorTree<V>
 {
 
@@ -24,10 +28,22 @@ public class DominatorTree<V>
 		postorderEnumeration = new HashMap<V, Integer>();
 	}
 
-	public static <V, E extends Edge<V>> DominatorTree<V> newInstance(
-			IncidenceListGraph<V, E> graph, V startNode)
+	public static <V> DominatorTree<V> newDominatorTree(
+			IncidenceListGraph<V, Edge<V>> graph, V root)
 	{
-		return new DominatorTreeCreator<V, E>(graph, startNode).create();
+		return new DominatorTreeCreator<V, Edge<V>>(graph, root).create();
+	}
+
+	public static DominatorTree<CFGNode> newDominatorTree(CFG cfg)
+	{
+		return new DominatorTreeCreator<CFGNode, CFGEdge>(cfg,
+				cfg.getEntryNode()).create();
+	}
+
+	public static DominatorTree<CFGNode> newPostDominatorTree(CFG cfg)
+	{
+		return new DominatorTreeCreator<CFGNode, Edge<CFGNode>>(cfg.reverse(),
+				cfg.getExitNode()).create();
 	}
 
 	public Collection<V> getVertices()

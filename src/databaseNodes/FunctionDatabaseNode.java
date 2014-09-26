@@ -47,8 +47,8 @@ public class FunctionDatabaseNode extends DatabaseNode
 	{
 		astRoot = (FunctionDef) node;
 		cfg = astToCFG.convert(astRoot);
-		dom = DominatorTree.newInstance(cfg, cfg.getEntryNode());
-		postDom = DominatorTree.newInstance(cfg.reverse(), cfg.getExitNode());
+		dom = DominatorTree.newDominatorTree(cfg);
+		postDom = DominatorTree.newPostDominatorTree(cfg);
 		udg = cfgToUDG.convert(cfg);
 		DefUseCFG defUseCFG = udgAndCfgToDefUseCFG.convert(cfg, udg);
 		ddg = ddgCreator.createForDefUseCFG(defUseCFG);
