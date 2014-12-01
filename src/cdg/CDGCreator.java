@@ -1,45 +1,84 @@
 package cdg;
 
 import graphutils.Edge;
-import graphutils.IncidenceListGraph;
 import cfg.CFG;
 import cfg.nodes.CFGNode;
 import dom.DominatorTree;
 
+/**
+ * This class provides static factory methods for control dependence graphs.
+ */
 public class CDGCreator
 {
-
-	public CDG create(CFG cfg)
+	/**
+	 * Creates the control dependence graph of the function given by the control
+	 * flow graph. Note that the control flow graph must not be augmented nor
+	 * reversed. Note that this method creates a post-dominator tree first.
+	 * 
+	 * @param cfg
+	 *            The control flow graph.
+	 * @return The control dependence graph.
+	 */
+	public static CDG create(CFG cfg)
 	{
-		IncidenceListGraph<CFGNode, Edge<CFGNode>> reverseCfg = cfg.reverse();
-		Edge<CFGNode> augment = new Edge<CFGNode>(cfg.getExitNode(),
-				cfg.getEntryNode());
-		reverseCfg.addEdge(augment);
-		DominatorTree<CFGNode> postDominatorTree = DominatorTree
-				.newDominatorTree(reverseCfg, cfg.getExitNode());
+		DominatorTree<CFGNode> postdominatorTree = DominatorTree
+				.newPostDominatorTree(cfg);
+		return create(cfg, postdominatorTree);
+	}
 
+	/**
+	 * Creates the control dependence graph of the function given by the control
+	 * flow graph and its post-dominator tree. Note that the control flow graph
+	 * must not be augmented nor reversed. This method takes care of the
+	 * augmentation without modifying the parameters.
+	 * 
+	 * @param cfg
+	 *            The control flow graph.
+	 * @param postdominatorTree
+	 *            The post-dominator tree.
+	 * @return The control dependence graph.
+	 */
+	public static CDG create(CFG cfg, DominatorTree<CFGNode> postdominatorTree)
+	{
 		CDG cdg = new CDG();
-		for (CFGNode node : postDominatorTree.getVertices())
+		for (CFGNode node : cfg.getVertices())
 		{
 			cdg.addVertex(node);
 		}
-		for (CFGNode node : postDominatorTree.getVertices())
+		for (CFGNode condition : postdominatorTree.getVertices())
 		{
-			if (reverseCfg.inDegree(node) > 1)
+			if (cfg.outDegree(condition) > 1)
 			{
 				CFGNode runner;
-				for (Edge<CFGNode> edge : reverseCfg.incomingEdges(node))
+				for (Edge<CFGNode> edge : cfg.outgoingEdges(condition))
 				{
-					CFGNode predecessor = edge.getSource();
-					if (cdg.contains(predecessor))
+					CFGNode destination = edge.getDestination();
+					if (cdg.contains(destination))
 					{
-
-						runner = predecessor;
-						while (!runner.equals(postDominatorTree
-								.getDominator(node)))
+						runner = destination;
+						while (!runner.equals(postdominatorTree
+								.getDominator(condition)))
 						{
-							cdg.addEdge(node, runner);
-							runner = postDominatorTree.getDominator(runner);
+							cdg.addEdge(condition, runner);
+							runner = postdominatorTree.getDominator(runner);
+						}
+					}
+				}
+			}
+			// Simulate augmentation
+			else if (condition.equals(cfg.getEntryNode()))
+			{
+				CFGNode runner;
+				for (Edge<CFGNode> edge : cfg.outgoingEdges(condition))
+				{
+					CFGNode destination = edge.getDestination();
+					if (cdg.contains(destination))
+					{
+						runner = destination;
+						while (!runner.equals(cfg.getExitNode()))
+						{
+							cdg.addEdge(condition, runner);
+							runner = postdominatorTree.getDominator(runner);
 						}
 					}
 				}

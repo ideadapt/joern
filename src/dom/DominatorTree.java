@@ -22,7 +22,7 @@ public class DominatorTree<V>
 	private HashMap<V, V> dominators;
 	private HashMap<V, Integer> postorderEnumeration;
 
-	DominatorTree()
+	private DominatorTree()
 	{
 		dominators = new HashMap<V, V>();
 		postorderEnumeration = new HashMap<V, Integer>();
@@ -42,8 +42,9 @@ public class DominatorTree<V>
 
 	public static DominatorTree<CFGNode> newPostDominatorTree(CFG cfg)
 	{
-		return new DominatorTreeCreator<CFGNode, Edge<CFGNode>>(cfg.reverse(),
-				cfg.getExitNode()).create();
+		CFG reverseCFG = cfg.reverse();
+		return new DominatorTreeCreator<CFGNode, CFGEdge>(reverseCFG,
+				reverseCFG.getEntryNode()).create();
 	}
 
 	public Collection<V> getVertices()
@@ -147,6 +148,14 @@ public class DominatorTree<V>
 	private boolean hasDominator(V vertex)
 	{
 		return dominators.get(vertex) != null;
+	}
+	
+	public String toString() {
+		String repr = "";
+		for (V vertex : getVertices()) {
+			repr += vertex + " IDOM " + getDominator(vertex) + "\n";
+		}
+		return repr;
 	}
 
 	private static class DominatorTreeCreator<V, E extends Edge<V>>

@@ -55,12 +55,9 @@ public class DomImporter
 		rel = DynamicRelationshipType.withName(EdgeTypes.POST_DOM);
 		for (CFGNode vertex : postDominatorTree.getVertices())
 		{
-			if (postDominatorTree.hasDominator(vertex))
-			{
-				CFGNode dominator = postDominatorTree.getDominator(vertex);
+			CFGNode dominator = postDominatorTree.getDominator(vertex);
 				Neo4JBatchInserter.addRelationship(getId(dominator),
 						getId(vertex), rel, null);
-			}
 		}
 	}
 }

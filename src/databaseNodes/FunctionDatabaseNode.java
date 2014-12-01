@@ -40,7 +40,6 @@ public class FunctionDatabaseNode extends DatabaseNode
 	CFGToUDGConverter cfgToUDG = new CFGToUDGConverter();
 	CFGAndUDGToDefUseCFG udgAndCfgToDefUseCFG = new CFGAndUDGToDefUseCFG();
 	DDGCreator ddgCreator = new DDGCreator();
-	CDGCreator cdgCreator = new CDGCreator();
 
 	@Override
 	public void initialize(Object node)
@@ -52,8 +51,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 		udg = cfgToUDG.convert(cfg);
 		DefUseCFG defUseCFG = udgAndCfgToDefUseCFG.convert(cfg, udg);
 		ddg = ddgCreator.createForDefUseCFG(defUseCFG);
-		cdg = cdgCreator.create(cfg);
-
+		cdg = CDGCreator.create(cfg, postDom);
 		setSignature(astRoot);
 	}
 

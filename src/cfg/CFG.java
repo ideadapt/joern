@@ -1,5 +1,8 @@
 package cfg;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import graphutils.IncidenceListGraph;
 import cfg.nodes.CFGEntryNode;
 import cfg.nodes.CFGErrorNode;
@@ -20,8 +23,13 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 
 	public CFG()
 	{
-		entry = new CFGEntryNode();
-		exit = new CFGExitNode();
+		this(new CFGEntryNode(), new CFGExitNode());
+	}
+
+	private CFG(CFGNode entry, CFGNode exit)
+	{
+		this.entry = entry;
+		this.exit = exit;
 		addVertex(entry);
 		addVertex(exit);
 		parameters = new LinkedList<CFGNode>();
@@ -59,12 +67,12 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 	{
 		parameters.add(parameter);
 	}
-	
+
 	public List<CFGNode> getParameters()
 	{
 		return parameters;
 	}
-	
+
 	public void addCFG(CFG otherCFG)
 	{
 		addVertices(otherCFG);
@@ -151,6 +159,24 @@ public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 	{
 		CFGEdge edge = new CFGEdge(srcBlock, dstBlock, label);
 		addEdge(edge);
+	}
+
+	public CFG reverse()
+	{
+		CFG reverseGraph = new CFG(getExitNode(), getEntryNode());
+		for (CFGNode node : getVertices())
+		{
+			if (!node.equals(getEntryNode()) && !node.equals(getExitNode()))
+			{
+				reverseGraph.addVertex(node);
+			}
+		}
+		for (CFGEdge edge : getEdges())
+		{
+			reverseGraph.addEdge(edge.reverse());
+		}
+		reverseGraph.parameters = parameters;
+		return reverseGraph;
 	}
 
 }

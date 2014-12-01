@@ -223,18 +223,18 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 		this.vertices.remove(vertex);
 	}
 
-	public IncidenceListGraph<V, Edge<V>> reverse()
+	public IncidenceListGraph<V, E> reverse(Class<E> type)
 	{
-		IncidenceListGraph<V, Edge<V>> reverseGraph = new IncidenceListGraph<V, Edge<V>>();
+		IncidenceListGraph<V, E> reverseGraph = new IncidenceListGraph<V, E>();
 		for (V vertex : getVertices())
 		{
 			reverseGraph.addVertex(vertex);
 		}
 		for (V vertex : getVertices())
 		{
-			for (Edge<V> edge : outgoingEdges(vertex))
+			for (E edge : outgoingEdges(vertex))
 			{
-				reverseGraph.addEdge(edge.reverse());
+				reverseGraph.addEdge(type.cast(edge.reverse()));
 			}
 		}
 		return reverseGraph;
@@ -251,11 +251,12 @@ public class IncidenceListGraph<V, E extends Edge<V>> implements Iterable<V>
 		String res = "";
 		for (V vertex : this)
 		{
-			res += vertex.toString() + '\n';
+			res += vertex.toString() + " { ";
 			for (Edge<V> edge : outgoingEdges(vertex))
 			{
-				res += edge.toString() + '\n';
+				res += edge.toString() + " ,";
 			}
+			res += " }\n";
 		}
 		return res;
 	}
