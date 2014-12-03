@@ -7,7 +7,6 @@ import org.neo4j.graphdb.RelationshipType;
 
 import ast.ASTNode;
 import ast.functionDef.FunctionDef;
-import ast.statements.CompoundStatement;
 import cfg.CFG;
 import cfg.nodes.ASTNodeContainer;
 import cfg.nodes.CFGNode;
@@ -25,6 +24,7 @@ public class FunctionImporter extends ASTNodeImporter
 	UDGImporter udgImporter = new UDGImporter(nodeStore);
 	DDGImporter ddgImporter = new DDGImporter(nodeStore);
 	CDGImporter cdgImporter = new CDGImporter(nodeStore);
+	DomImporter domImporter = new DomImporter(nodeStore);
 
 	public void addToDatabaseSafe(ASTNode node)
 	{
@@ -60,6 +60,8 @@ public class FunctionImporter extends ASTNodeImporter
 		udgImporter.addUDGToDatabase(function.getUDG());
 		ddgImporter.addDDGToDatabase(function.getDDG());
 		cdgImporter.addCDGToDatabase(function.getCDG());
+		domImporter.addDomToDatabase(function.getDominatorTree());
+		domImporter.addPostDomToDatabse(function.getPostDominatorTree());
 
 		linkFunctionToASTAndCFG(function);
 

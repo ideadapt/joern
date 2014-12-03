@@ -83,5 +83,11 @@ public class CFGEdge extends Edge<CFGNode>
 	{
 		return getSource() + " ==[" + getLabel() + "]==> " + getDestination();
 	}
+	
+	@Override
+	public CFGEdge reverse() {
+		return new CFGEdge(getDestination(), getSource(), getLabel());
+		
+	}
 
 }

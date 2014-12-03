@@ -8,7 +8,6 @@ import org.neo4j.graphdb.RelationshipType;
 
 import cdg.CDG;
 import cdg.CDGEdge;
-import cdg.DominatorTree;
 import cfg.nodes.ASTNodeContainer;
 import cfg.nodes.CFGNode;
 import databaseNodes.EdgeTypes;
@@ -28,17 +27,6 @@ public class CDGImporter
 
 		RelationshipType rel;
 
-		// Add post dominator edges
-		DominatorTree<CFGNode> dominatorTree = cdg.getDominatorTree();
-		rel = DynamicRelationshipType.withName(EdgeTypes.POST_DOM);
-		for (CFGNode vertex : dominatorTree.getVertices())
-		{
-			CFGNode dominator = dominatorTree.getDominator(vertex);
-			Neo4JBatchInserter.addRelationship(getId(dominator), getId(vertex),
-					rel, null);
-		}
-
-		// Add control edges
 		rel = DynamicRelationshipType.withName(EdgeTypes.CONTROLS);
 		for (CFGNode src : cdg.getVertices())
 		{

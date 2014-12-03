@@ -3,35 +3,38 @@ package cfg;
 import java.util.LinkedList;
 import java.util.List;
 
-import graphutils.AbstractTwoWayGraph;
+import graphutils.IncidenceListGraph;
 import cfg.nodes.CFGEntryNode;
 import cfg.nodes.CFGErrorNode;
 import cfg.nodes.CFGExitNode;
 import cfg.nodes.CFGNode;
 
 /**
- * Control Flow Graph. Consider this to be the target format
- * of CFGFactories. Please place language specific attributes
- * of the CFG into a sub-class.
+ * Control Flow Graph. Consider this to be the target format of CFGFactories.
+ * Please place language specific attributes of the CFG into a sub-class.
  * */
 
-public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
+public class CFG extends IncidenceListGraph<CFGNode, CFGEdge>
 {
-	private CFGEntryNode entry;
-	private CFGExitNode exit;
-	private CFGErrorNode error;
 	private List<CFGNode> parameters;
-	
+	private CFGNode entry;
+	private CFGNode exit;
+	private CFGNode error;
+
 	public CFG()
 	{
-		entry = new CFGEntryNode();
-		exit = new CFGExitNode();
+		this(new CFGEntryNode(), new CFGExitNode());
+	}
+
+	private CFG(CFGNode entry, CFGNode exit)
+	{
+		this.entry = entry;
+		this.exit = exit;
 		addVertex(entry);
 		addVertex(exit);
 		parameters = new LinkedList<CFGNode>();
 	}
 
-	
 	@Override
 	public boolean isEmpty()
 	{
@@ -64,12 +67,12 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 	{
 		parameters.add(parameter);
 	}
-	
+
 	public List<CFGNode> getParameters()
 	{
 		return parameters;
 	}
-	
+
 	public void addCFG(CFG otherCFG)
 	{
 		addVertices(otherCFG);
@@ -81,7 +84,7 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 		addCFG(otherCFG);
 		if (!otherCFG.isEmpty())
 		{
-			for (CFGEdge edge1 : ingoingEdges(getExitNode()))
+			for (CFGEdge edge1 : incomingEdges(getExitNode()))
 			{
 				for (CFGEdge edge2 : otherCFG.outgoingEdges(otherCFG
 						.getEntryNode()))
@@ -91,7 +94,7 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 				}
 			}
 			removeEdgesTo(getExitNode());
-			for (CFGEdge edge : otherCFG.ingoingEdges(otherCFG.getExitNode()))
+			for (CFGEdge edge : otherCFG.incomingEdges(otherCFG.getExitNode()))
 			{
 				addEdge(edge.getSource(), getExitNode(), edge.getLabel());
 			}
@@ -108,7 +111,7 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 			{
 				addEdge(branchNode, edge.getDestination(), label);
 			}
-			for (CFGEdge edge : cfg.ingoingEdges(cfg.getExitNode()))
+			for (CFGEdge edge : cfg.incomingEdges(cfg.getExitNode()))
 			{
 				addEdge(edge.getSource(), mergeNode, edge.getLabel());
 			}
@@ -158,5 +161,22 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 		addEdge(edge);
 	}
 
+	public CFG reverse()
+	{
+		CFG reverseGraph = new CFG(getExitNode(), getEntryNode());
+		for (CFGNode node : getVertices())
+		{
+			if (!node.equals(getEntryNode()) && !node.equals(getExitNode()))
+			{
+				reverseGraph.addVertex(node);
+			}
+		}
+		for (CFGEdge edge : getEdges())
+		{
+			reverseGraph.addEdge(edge.reverse());
+		}
+		reverseGraph.parameters = parameters;
+		return reverseGraph;
+	}
 
 }

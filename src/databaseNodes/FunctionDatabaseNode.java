@@ -12,10 +12,12 @@ import cdg.CDG;
 import cdg.CDGCreator;
 import cfg.ASTToCFGConverter;
 import cfg.CFG;
+import cfg.nodes.CFGNode;
 import ddg.CFGAndUDGToDefUseCFG;
 import ddg.DDGCreator;
 import ddg.DataDependenceGraph.DDG;
 import ddg.DefUseCFG.DefUseCFG;
+import dom.DominatorTree;
 
 // Note: we currently use the FunctionDatabaseNode
 // as a container for the Function. That's not very
@@ -28,26 +30,28 @@ public class FunctionDatabaseNode extends DatabaseNode
 	UseDefGraph udg;
 	DDG ddg;
 	CDG cdg;
+	DominatorTree<CFGNode> dom;
+	DominatorTree<CFGNode> postDom;
 
 	String signature;
 	String name;
-	
+
 	ASTToCFGConverter astToCFG = new ASTToCFGConverter();
 	CFGToUDGConverter cfgToUDG = new CFGToUDGConverter();
 	CFGAndUDGToDefUseCFG udgAndCfgToDefUseCFG = new CFGAndUDGToDefUseCFG();
 	DDGCreator ddgCreator = new DDGCreator();
-	CDGCreator cdgCreator = new CDGCreator();
 
 	@Override
 	public void initialize(Object node)
 	{
 		astRoot = (FunctionDef) node;
 		cfg = astToCFG.convert(astRoot);
+		dom = DominatorTree.newDominatorTree(cfg);
+		postDom = DominatorTree.newPostDominatorTree(cfg);
 		udg = cfgToUDG.convert(cfg);
 		DefUseCFG defUseCFG = udgAndCfgToDefUseCFG.convert(cfg, udg);
 		ddg = ddgCreator.createForDefUseCFG(defUseCFG);
-		cdg = cdgCreator.create(cfg);
-
+		cdg = CDGCreator.create(cfg, postDom);
 		setSignature(astRoot);
 	}
 
@@ -92,15 +96,21 @@ public class FunctionDatabaseNode extends DatabaseNode
 		return cdg;
 	}
 
+	public DominatorTree<CFGNode> getDominatorTree()
+	{
+		return dom;
+	}
+
 	public String getLocation()
 	{
 		return astRoot.getLocationString();
 	}
-	
-	public CodeLocation getContentLocation(){
+
+	public CodeLocation getContentLocation()
+	{
 		return astRoot.getContent().getLocation();
 	}
-	
+
 	public String getSignature()
 	{
 		return signature;
@@ -110,5 +120,10 @@ public class FunctionDatabaseNode extends DatabaseNode
 	{
 		signature = node.getFunctionSignature();
 	}
-	
+
+	public DominatorTree<CFGNode> getPostDominatorTree()
+	{
+		return postDom;
+	}
+
 }

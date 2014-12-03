@@ -2,7 +2,6 @@ package udg;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import udg.useDefAnalysis.ASTDefUseAnalyzer;
 import udg.useDefGraph.UseDefGraph;
@@ -30,7 +29,7 @@ public class CFGToUDGConverter
 
 		UseDefGraph useDefGraph = new UseDefGraph();
 
-		List<CFGNode> statements = cfg.getVertices();
+		Collection<CFGNode> statements = cfg.getVertices();
 
 		for (CFGNode cfgNode : statements)
 		{
