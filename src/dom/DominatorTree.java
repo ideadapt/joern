@@ -2,15 +2,12 @@ package dom;
 
 import graphutils.Edge;
 import graphutils.IncidenceListGraph;
-import graphutils.PostorderIterator;
 
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import cfg.CFG;
 import cfg.CFGEdge;
@@ -22,10 +19,12 @@ public class DominatorTree<V>
 	private HashMap<V, V> dominators;
 	private HashMap<V, Integer> postorderEnumeration;
 
-	private DominatorTree()
+	private DominatorTree(V root)
 	{
 		dominators = new HashMap<V, V>();
 		postorderEnumeration = new HashMap<V, Integer>();
+		addVertex(root);
+		setDominator(root, root);
 	}
 
 	public static <V> DominatorTree<V> newDominatorTree(
@@ -62,11 +61,6 @@ public class DominatorTree<V>
 		return postorderEnumeration.get(vertex);
 	}
 
-	// public Set<V> dominanceFrontier(V vertex)
-	// {
-	// return dominanceFrontiers.get(vertex);
-	// }
-
 	private V commonDominator(List<V> vertices)
 	{
 		Deque<V> stack = new LinkedList<V>();
@@ -88,17 +82,22 @@ public class DominatorTree<V>
 		return stack.pop();
 	}
 
+	private boolean isSmaller(V vertex1, V vertex2)
+	{
+		return postorderNumber(vertex1) < postorderNumber(vertex2);
+	}
+
 	private V commonDominator(V vertex1, V vertex2)
 	{
 		V finger1 = vertex1;
 		V finger2 = vertex2;
 		while (!finger1.equals(finger2))
 		{
-			while (postorderNumber(finger1) < postorderNumber(finger2))
+			while (isSmaller(finger1, finger2))
 			{
 				finger1 = getDominator(finger1);
 			}
-			while (postorderNumber(finger2) < postorderNumber(finger1))
+			while (isSmaller(finger2, finger1))
 			{
 				finger2 = getDominator(finger2);
 			}
@@ -140,7 +139,7 @@ public class DominatorTree<V>
 		return changed;
 	}
 
-	private boolean contains(V vertex)
+	public boolean contains(V vertex)
 	{
 		return dominators.containsKey(vertex);
 	}
@@ -149,10 +148,12 @@ public class DominatorTree<V>
 	{
 		return dominators.get(vertex) != null;
 	}
-	
-	public String toString() {
+
+	public String toString()
+	{
 		String repr = "";
-		for (V vertex : getVertices()) {
+		for (V vertex : getVertices())
+		{
 			repr += vertex + " IDOM " + getDominator(vertex) + "\n";
 		}
 		return repr;
@@ -162,43 +163,37 @@ public class DominatorTree<V>
 	{
 
 		private DominatorTree<V> dominatorTree;
-		private IncidenceListGraph<V, E> graph;
-		private List<V> orderedVertices;
+		private IncidenceListGraph<V, E> flowgraph;
+		private Deque<V> queue;
 		private V startNode;
 
-		public DominatorTreeCreator(IncidenceListGraph<V, E> graph, V startNode)
+		public DominatorTreeCreator(IncidenceListGraph<V, E> flowgraph,
+				V startNode)
 		{
-			this.dominatorTree = new DominatorTree<V>();
-			this.graph = graph;
-			this.orderedVertices = new LinkedList<V>();
+			this.dominatorTree = new DominatorTree<V>(startNode);
+			this.flowgraph = flowgraph;
+			this.queue = new LinkedList<V>();
 			this.startNode = startNode;
 		}
 
 		public DominatorTree<V> create()
 		{
-			enumerateVertices();
-			initializeDominatorTree();
-			buildDominatorTree();
+			createStack(startNode);
+			createDominatorTree();
 			return dominatorTree;
 		}
 
-		private void buildDominatorTree()
+		private void createDominatorTree()
 		{
 			boolean changed = true;
+			queue.remove();
 			while (changed)
 			{
 				changed = false;
-
-				ListIterator<V> reverseVertexIterator = orderedVertices
-						.listIterator(orderedVertices.size());
-				// Skip the root
-				reverseVertexIterator.previous();
-
-				while (reverseVertexIterator.hasPrevious())
+				for (V currentNode : queue)
 				{
-					V currentNode = reverseVertexIterator.previous();
 					List<V> list = new LinkedList<V>();
-					for (Edge<V> edge : graph.incomingEdges(currentNode))
+					for (Edge<V> edge : flowgraph.incomingEdges(currentNode))
 					{
 						list.add(edge.getSource());
 					}
@@ -212,27 +207,20 @@ public class DominatorTree<V>
 			}
 		}
 
-		private void enumerateVertices()
+		private void createStack(V node)
 		{
-			int counter = 0;
-			Iterator<V> postorderIterator = new PostorderIterator<V, E>(graph,
-					startNode);
-			while (postorderIterator.hasNext())
+			queue.add(node);
+			dominatorTree.postorderEnumeration.put(node, flowgraph.size()
+					- queue.size());
+			for (E edge : flowgraph.outgoingEdges(node))
 			{
-				V vertex = postorderIterator.next();
-				orderedVertices.add(vertex);
-				dominatorTree.postorderEnumeration.put(vertex, counter++);
+				V destination = edge.getDestination();
+				if (!dominatorTree.postorderEnumeration
+						.containsKey(destination))
+				{
+					createStack(destination);
+				}
 			}
-			if (orderedVertices.size() < graph.size())
-			{
-				System.out.println("warning: incomplete control flow graph");
-			}
-		}
-
-		private void initializeDominatorTree()
-		{
-			dominatorTree.addVertex(startNode);
-			dominatorTree.setDominator(startNode, startNode);
 		}
 
 	}
