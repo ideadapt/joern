@@ -53,7 +53,7 @@ public class CDGCreator
 				for (Edge<CFGNode> edge : cfg.outgoingEdges(condition))
 				{
 					CFGNode destination = edge.getDestination();
-					if (cdg.contains(destination))
+					if (postdominatorTree.contains(destination))
 					{
 						runner = destination;
 						while (!runner.equals(postdominatorTree
@@ -72,7 +72,7 @@ public class CDGCreator
 				for (Edge<CFGNode> edge : cfg.outgoingEdges(condition))
 				{
 					CFGNode destination = edge.getDestination();
-					if (cdg.contains(destination))
+					if (postdominatorTree.contains(destination))
 					{
 						runner = destination;
 						while (!runner.equals(cfg.getExitNode()))
