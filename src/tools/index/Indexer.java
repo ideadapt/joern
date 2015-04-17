@@ -3,23 +3,23 @@ package tools.index;
 import java.nio.file.Path;
 
 import outputModules.neo4j.importers.DirectoryTreeImporter;
+import parsing.ANTLRParserDriver;
 import parsing.ModuleParser;
 import parsing.C.Modules.ANTLRCModuleParserDriver;
 import fileWalker.SourceFileListener;
 
+import javax.xml.transform.Source;
+
 
 public abstract class Indexer extends SourceFileListener
 {
-
-	ANTLRCModuleParserDriver driver = new ANTLRCModuleParserDriver();
-	ModuleParser parser = new ModuleParser(driver);
-
+	protected ModuleParser parser;
 	protected IndexerState state;
 	protected IndexerASTWalker astWalker;
 	protected DirectoryTreeImporter dirTreeImporter;
+	protected SourceLanguage sourceLanguage;
 
 	protected String outputDir;
-
 
 	protected abstract void initializeDirectoryImporter();
 
@@ -29,7 +29,6 @@ public abstract class Indexer extends SourceFileListener
 
 	protected abstract void shutdownDatabase();
 
-
 	protected void initializeIndexerState()
 	{
 		state = new IndexerState(this);
@@ -38,6 +37,16 @@ public abstract class Indexer extends SourceFileListener
 	public void setOutputDir(String anOutputDir)
 	{
 		outputDir = anOutputDir;
+	}
+
+	public void setSourceLanguage(SourceLanguage sourceLanguage){
+		ANTLRParserDriver driver = null;
+		if(sourceLanguage == SourceLanguage.C){
+			driver = new parsing.C.Modules.ANTLRCModuleParserDriver();
+		}else if (sourceLanguage == SourceLanguage.ECMAScript5){
+			driver = new parsing.ECMAScript5.ANTLRECMAScriptParserDriver();
+		}
+		parser = new ModuleParser(driver);
 	}
 
 	@Override

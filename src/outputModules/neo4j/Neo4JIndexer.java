@@ -4,12 +4,15 @@ import java.util.Map;
 
 import neo4j.batchInserter.ConfigurationGenerator;
 import neo4j.batchInserter.Neo4JBatchInserter;
+import parsing.ANTLRParserDriver;
+import parsing.ECMAScript5.ECMAScriptParser;
+import parsing.ModuleParser;
 import tools.index.Indexer;
+import tools.index.SourceLanguage;
 
 
 public class Neo4JIndexer extends Indexer
 {
-
 	@Override
 	protected void initializeWalker()
 	{

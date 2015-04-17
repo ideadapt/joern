@@ -12,6 +12,7 @@ public class CommandLineInterface extends CommonCommandLineInterface
 	private String[] filenames;
 
 	String outputDir = ".joernIndex/";
+	SourceLanguage sourceLanguage = SourceLanguage.ECMAScript5;
 
 	public String[] getFilenames()
 	{
@@ -21,6 +22,11 @@ public class CommandLineInterface extends CommonCommandLineInterface
 	public String getOutputDir()
 	{
 		return outputDir;
+	}
+
+	public SourceLanguage getSourceLanguage()
+	{
+		return sourceLanguage;
 	}
 
 	public CommandLineInterface()
