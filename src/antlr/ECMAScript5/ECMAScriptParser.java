@@ -1,4 +1,4 @@
-package antlr.ECMAScript5;// Generated from ECMAScript.g4 by ANTLR 4.5
+package antlr.ECMAScript5;// Generated from src/antlr/ECMAScript5/ECMAScript.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;

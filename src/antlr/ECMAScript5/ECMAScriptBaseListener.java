@@ -1,11 +1,9 @@
-package antlr.ECMAScript5;// Generated from ECMAScript.g4 by ANTLR 4.5
+package antlr.ECMAScript5;// Generated from src/antlr/ECMAScript5/ECMAScript.g4 by ANTLR 4.5
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
-import parsing.ANTLRParserDriver;
-
 
 /**
  * This class provides an empty implementation of {@link ECMAScriptListener},
@@ -13,14 +11,6 @@ import parsing.ANTLRParserDriver;
  * of the available methods.
  */
 public class ECMAScriptBaseListener implements ECMAScriptListener {
-
-	ANTLRParserDriver p;
-
-	public ECMAScriptBaseListener(ANTLRParserDriver aP)
-	{
-		p = aP;
-	}
-
 	/**
 	 * {@inheritDoc}
 	 *

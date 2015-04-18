@@ -1,4 +1,4 @@
-package antlr.ECMAScript5;// Generated from ECMAScript.g4 by ANTLR 4.5
+package antlr.ECMAScript5;// Generated from src/antlr/ECMAScript5/ECMAScript.g4 by ANTLR 4.5
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 

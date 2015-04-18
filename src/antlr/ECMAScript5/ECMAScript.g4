@@ -26,6 +26,10 @@
  */
 grammar ECMAScript;
 
+@header{
+	package antlr.ECMAScript5;
+}
+
 @parser::members {
   
     /**
