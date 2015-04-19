@@ -3,6 +3,7 @@ package databaseNodes;
 import java.util.HashMap;
 import java.util.Map;
 
+import tools.index.SourceLanguage;
 import udg.CFGToUDGConverter;
 import udg.useDefGraph.UseDefGraph;
 import ast.ASTNode;
@@ -32,11 +33,19 @@ public class FunctionDatabaseNode extends DatabaseNode
 	String signature;
 	String name;
 	
-	ASTToCFGConverter astToCFG = new ASTToCFGConverter();
-	CFGToUDGConverter cfgToUDG = new CFGToUDGConverter();
-	CFGAndUDGToDefUseCFG udgAndCfgToDefUseCFG = new CFGAndUDGToDefUseCFG();
-	DDGCreator ddgCreator = new DDGCreator();
-	CDGCreator cdgCreator = new CDGCreator();
+	ASTToCFGConverter astToCFG;
+	CFGToUDGConverter cfgToUDG;
+	CFGAndUDGToDefUseCFG udgAndCfgToDefUseCFG;
+	DDGCreator ddgCreator;
+	CDGCreator cdgCreator;
+
+	public FunctionDatabaseNode(SourceLanguage sourceLanguage) {
+		astToCFG = new ASTToCFGConverter(sourceLanguage);
+		cfgToUDG = new CFGToUDGConverter();
+		udgAndCfgToDefUseCFG = new CFGAndUDGToDefUseCFG();
+		ddgCreator = new DDGCreator();
+		cdgCreator = new CDGCreator();
+	}
 
 	@Override
 	public void initialize(Object node)

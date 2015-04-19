@@ -14,23 +14,34 @@ import cfg.nodes.CFGNode;
 import databaseNodes.EdgeTypes;
 import databaseNodes.FileDatabaseNode;
 import databaseNodes.FunctionDatabaseNode;
+import tools.index.SourceLanguage;
 
 // Stays alive while importing a function into
 // the database
 
 public class FunctionImporter extends ASTNodeImporter
 {
-	ASTImporter astImporter = new ASTImporter(nodeStore);
-	CFGImporter cfgImporter = new CFGImporter(nodeStore);
-	UDGImporter udgImporter = new UDGImporter(nodeStore);
-	DDGImporter ddgImporter = new DDGImporter(nodeStore);
-	CDGImporter cdgImporter = new CDGImporter(nodeStore);
+	private final UDGImporter udgImporter;
+	private final DDGImporter ddgImporter;
+	private final CDGImporter cdgImporter;
+	private final ASTImporter astImporter;
+	private final CFGImporter cfgImporter;
+	private final SourceLanguage sourceLanguage;
+
+	public FunctionImporter(SourceLanguage sourceLanguage) {
+		this.sourceLanguage = sourceLanguage;
+		astImporter = new ASTImporter(nodeStore);
+		cfgImporter = new CFGImporter(nodeStore);
+		udgImporter = new UDGImporter(nodeStore);
+		ddgImporter = new DDGImporter(nodeStore);
+		cdgImporter = new CDGImporter(nodeStore);
+	}
 
 	public void addToDatabaseSafe(ASTNode node)
 	{
 		try
 		{
-			FunctionDatabaseNode function = new FunctionDatabaseNode();
+			FunctionDatabaseNode function = new FunctionDatabaseNode(sourceLanguage);
 			// this actually constructs all other representations of
 			// the function.
 			function.initialize(node);

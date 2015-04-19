@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import tests.TestDBTestsBatchInserter;
+import tools.index.SourceLanguage;
 import udg.CFGToUDGConverter;
 import udg.useDefGraph.UseDefGraph;
 import udg.useDefGraph.UseOrDefRecord;
@@ -41,7 +42,7 @@ public class testUseDefGraphCreator extends TestDBTestsBatchInserter
 	@Before
 	public void init()
 	{
-		astToCFG = new ASTToCFGConverter();
+		astToCFG = new ASTToCFGConverter(SourceLanguage.C);
 		cfgToUDG = new CFGToUDGConverter();
 	}
 

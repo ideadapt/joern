@@ -12,7 +12,7 @@ public class Neo4JIndexer extends Indexer
 	@Override
 	protected void initializeWalker()
 	{
-		astWalker = new Neo4JASTWalker();
+		astWalker = new Neo4JASTWalker(sourceLanguage);
 	}
 
 	@Override

@@ -29,9 +29,11 @@ import ast.statements.ReturnStatement;
 import ast.statements.SwitchStatement;
 import ast.statements.WhileStatement;
 import databaseNodes.FileDatabaseNode;
+import tools.index.SourceLanguage;
 
 public class ASTNodeVisitor
 {
+	protected SourceLanguage sourceLanguage;
 	protected FileDatabaseNode currentFileNode;
 	protected Stack<Long> contextStack;
 

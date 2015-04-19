@@ -5,6 +5,7 @@ import ast.functionDef.FunctionDef;
 import ast.statements.IdentifierDeclStatement;
 import ast.walking.ASTNodeVisitor;
 import databaseNodes.FunctionDatabaseNode;
+import tools.index.SourceLanguage;
 
 public class DummyASTNodeVisitor extends ASTNodeVisitor
 {
@@ -15,7 +16,7 @@ public class DummyASTNodeVisitor extends ASTNodeVisitor
 		// supported representations from the AST:
 		
 		try{ 
-			FunctionDatabaseNode dbNode = new FunctionDatabaseNode();
+			FunctionDatabaseNode dbNode = new FunctionDatabaseNode(SourceLanguage.C);
 			dbNode.initialize(node);
 		}catch (RuntimeException ex){
 			

@@ -13,6 +13,7 @@ import ast.walking.ASTNodeVisitor;
 import ast.walking.ASTWalker;
 import cfg.ASTToCFGConverter;
 import cfg.CFG;
+import tools.index.SourceLanguage;
 
 public class CFGCreator
 {
@@ -20,7 +21,7 @@ public class CFGCreator
 	private class NodeVisitor extends ASTNodeVisitor
 	{
 		private CFG cfg;
-		private ASTToCFGConverter astToCFG = new ASTToCFGConverter();
+		private ASTToCFGConverter astToCFG = new ASTToCFGConverter(SourceLanguage.C);
 
 		public void visit(FunctionDef node)
 		{

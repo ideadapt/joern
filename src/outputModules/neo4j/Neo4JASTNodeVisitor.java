@@ -15,15 +15,20 @@ import ast.functionDef.FunctionDef;
 import ast.statements.IdentifierDeclStatement;
 import ast.walking.ASTNodeVisitor;
 import databaseNodes.EdgeTypes;
+import tools.index.SourceLanguage;
 
 // Stays alive during the lifetime of the program
 
 public class Neo4JASTNodeVisitor extends ASTNodeVisitor
 {
 
+	public Neo4JASTNodeVisitor(SourceLanguage sourceLanguage) {
+		this.sourceLanguage = sourceLanguage;
+	}
+
 	public void visit(FunctionDef node)
 	{
-		ASTNodeImporter importer = new FunctionImporter();
+		ASTNodeImporter importer = new FunctionImporter(sourceLanguage);
 		importNode(importer, node);
 	}
 
