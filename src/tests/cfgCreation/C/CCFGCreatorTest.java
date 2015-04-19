@@ -1,20 +1,22 @@
-package tests.cfgCreation;
+package tests.cfgCreation.C;
 
-import ast.ASTNode;
-import cfg.C.CCFGFactory;
-import cfg.CFG;
-import cfg.nodes.CFGNode;
 import tests.parseTreeToAST.FunctionContentTestUtil;
+import ast.ASTNode;
+import cfg.CFG;
+import cfg.C.CCFGFactory;
+import cfg.nodes.CFGNode;
 
-public abstract class CFGCreatorTest
+public class CCFGCreatorTest
 {
-
 	protected ASTNode getASTForCode(String input)
 	{
 		return FunctionContentTestUtil.parseAndWalk(input);
 	}
 
-	protected abstract CFG getCFGForCode(String input);
+	protected CFG getCFGForCode(String input)
+	{
+		return CCFGFactory.convert(getASTForCode(input));
+	}
 
 	protected CFGNode getNodeByCode(CFG cfg, String code)
 	{

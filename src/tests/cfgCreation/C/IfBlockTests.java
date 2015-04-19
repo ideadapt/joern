@@ -1,4 +1,4 @@
-package tests.cfgCreation;
+package tests.cfgCreation.C;
 
 import static org.junit.Assert.assertTrue;
 
