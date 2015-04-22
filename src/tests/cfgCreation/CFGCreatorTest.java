@@ -4,23 +4,22 @@ import ast.ASTNode;
 import cfg.C.CCFGFactory;
 import cfg.CFG;
 import cfg.nodes.CFGNode;
+import parsing.ECMAScript5.ANTLRECMAScriptParserDriver;
 import tests.parseTreeToAST.FunctionContentTestUtil;
 
 public abstract class CFGCreatorTest
 {
 
-	protected ASTNode getASTForCode(String input)
-	{
-		return FunctionContentTestUtil.parseAndWalk(input);
-	}
+	protected abstract ASTNode getASTForCode(String input);
 
 	protected abstract CFG getCFGForCode(String input);
 
 	protected CFGNode getNodeByCode(CFG cfg, String code)
 	{
+		code = "[" + code + "]";
 		for (CFGNode node : cfg.getVertices())
 		{
-			if (node.toString().equals("[" + code + "]"))
+			if (node.toString().equals(code))
 			{
 				return node;
 			}

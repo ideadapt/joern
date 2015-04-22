@@ -8,7 +8,7 @@ import cfg.CFG;
 import cfg.nodes.CFGNode;
 import cfg.nodes.InfiniteForNode;
 
-public class OtherTests extends CFGCreatorTest
+public class OtherTests extends CCFGCreatorTest
 {
 
 	@Test

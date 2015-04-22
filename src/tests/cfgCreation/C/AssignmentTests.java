@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import cfg.CFG;
 
-public class AssignmentTests extends CFGCreatorTest
+public class AssignmentTests extends CCFGCreatorTest
 {
 	@Test
 	public void testSingleAssignmentBlockNumber()

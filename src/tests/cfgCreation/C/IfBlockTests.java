@@ -7,7 +7,7 @@ import org.junit.Test;
 import cfg.CFG;
 import cfg.nodes.CFGNode;
 
-public class IfBlockTests extends CFGCreatorTest
+public class IfBlockTests extends CCFGCreatorTest
 {
 
 	@Test

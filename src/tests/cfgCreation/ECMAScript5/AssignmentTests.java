@@ -1,36 +1,29 @@
 package tests.cfgCreation.ECMAScript5;
 
-import static org.junit.Assert.assertTrue;
-
+import cfg.CFG;
 import org.junit.Test;
 
-import cfg.CFG;
-import tests.cfgCreation.C.CCFGCreatorTest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class AssignmentTests extends CCFGCreatorTest
+public class AssignmentTests extends ECMAScript5CFGCreatorTest
 {
 	@Test
-	public void testSingleAssignmentBlockNumber()
+	public void testSingleAssignmentInDeclBlockNumber()
 	{
-		String input = "x = y;";
+		String input = "var a = 1;";
 		CFG cfg = getCFGForCode(input);
-		assertTrue(cfg.size() == 3);
+
+		System.out.println(getASTForCode(input).getEscapedCodeStr());
+
+		assertEquals(3, cfg.size());
 	}
 
 	@Test
 	public void testAssignmentASTLink()
 	{
-		String input = "x = 10;";
+		String input = "var x = 10;";
 		CFG cfg = getCFGForCode(input);
-		assertTrue(getNodeByCode(cfg, "x = 10") != null);
+		assertTrue(getNodeByCode(cfg, "var x = 10") != null);
 	}
-
-	@Test
-	public void testAssignmentInDecl()
-	{
-		String input = "int x = 10;";
-		CFG cfg = getCFGForCode(input);
-		assertTrue(cfg.size() == 3);
-	}
-
 }

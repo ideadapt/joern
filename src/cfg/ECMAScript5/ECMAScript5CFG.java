@@ -1,11 +1,11 @@
 package cfg.ECMAScript5;
 
+import cfg.CFG;
+import cfg.nodes.CFGNode;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import cfg.CFG;
-import cfg.nodes.CFGNode;
 
 public class ECMAScript5CFG extends CFG
 {
