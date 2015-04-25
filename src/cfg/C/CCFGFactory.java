@@ -98,26 +98,21 @@ public class CCFGFactory extends CFGFactory
 		try
 		{
 			CCFG block = new CCFG();
-			CFGNode conditionContainer = new ASTNodeContainer(
-					ifStatement.getCondition());
+			CFGNode conditionContainer = new ASTNodeContainer(ifStatement.getCondition());
 			block.addVertex(conditionContainer);
 			block.addEdge(block.getEntryNode(), conditionContainer);
 
 			CFG ifBlock = convert(ifStatement.getStatement());
-			block.mountCFG(conditionContainer, block.getExitNode(), ifBlock,
-					CFGEdge.TRUE_LABEL);
+			block.mountCFG(conditionContainer, block.getExitNode(), ifBlock, CFGEdge.TRUE_LABEL);
 
 			if (ifStatement.getElseNode() != null)
 			{
-				CFG elseBlock = convert(ifStatement.getElseNode()
-						.getStatement());
-				block.mountCFG(conditionContainer, block.getExitNode(),
-						elseBlock, CFGEdge.FALSE_LABEL);
+				CFG elseBlock = convert(ifStatement.getElseNode().getStatement());
+				block.mountCFG(conditionContainer, block.getExitNode(), elseBlock, CFGEdge.FALSE_LABEL);
 			}
 			else
 			{
-				block.addEdge(conditionContainer, block.getExitNode(),
-						CFGEdge.FALSE_LABEL);
+				block.addEdge(conditionContainer, block.getExitNode(), CFGEdge.FALSE_LABEL);
 			}
 
 			return block;

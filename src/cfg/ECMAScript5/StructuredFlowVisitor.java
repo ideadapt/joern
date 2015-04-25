@@ -1,9 +1,7 @@
 package cfg.ECMAScript5;
 
 import cfg.CFG;
-import jdk.nashorn.internal.ir.LexicalContext;
-import jdk.nashorn.internal.ir.Node;
-import jdk.nashorn.internal.ir.VarNode;
+import jdk.nashorn.internal.ir.*;
 import jdk.nashorn.internal.ir.visitor.NodeVisitor;
 
 
@@ -25,6 +23,12 @@ class StructuredFlowVisitor extends NodeVisitor
 	public boolean enterVarNode(VarNode varNode) {
 		returnCFG = ECMAScript5CFGFactory.newInstance(varNode);
 		return super.enterVarNode(varNode);
+	}
+
+	@Override
+	public boolean enterIfNode(IfNode ifNode) {
+		returnCFG = ECMAScript5CFGFactory.newInstance(ifNode);
+		return false;
 	}
 
 	CFG getCFG()
