@@ -7,9 +7,7 @@ import ast.statements.IdentifierDeclStatement;
 
 public class DeclStmtDatabaseNode extends DatabaseNode
 {
-
 	String typeStr;
-	String idStr;
 
 	@Override
 	public void initialize(Object obj)

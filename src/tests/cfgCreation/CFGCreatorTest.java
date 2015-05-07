@@ -1,11 +1,8 @@
 package tests.cfgCreation;
 
 import ast.ASTNode;
-import cfg.C.CCFGFactory;
 import cfg.CFG;
 import cfg.nodes.CFGNode;
-import parsing.ECMAScript5.ANTLRECMAScriptParserDriver;
-import tests.parseTreeToAST.FunctionContentTestUtil;
 
 public abstract class CFGCreatorTest
 {

@@ -5,8 +5,7 @@ import java.util.Map;
 
 public class GraphNodeStore
 {
-
-	Map<Object, Long> objectToId = new HashMap<Object, Long>();
+	protected Map<Object, Long> objectToId = new HashMap<Object, Long>();
 
 	public long getIdForObject(Object o)
 	{
@@ -30,5 +29,4 @@ public class GraphNodeStore
 		long nodeId = getIdForObject(o);
 		Neo4JBatchInserter.setNodeProperty(nodeId, key, val);
 	}
-
 }

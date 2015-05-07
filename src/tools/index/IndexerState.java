@@ -10,14 +10,7 @@ import databaseNodes.FileDatabaseNode;
 
 public class IndexerState
 {
-
-	protected Indexer indexer;
 	private FileDatabaseNode currentFileNode;
-	
-	public IndexerState(Indexer anIndexer)
-	{
-		indexer = anIndexer;
-	}
 
 	public void setCurrentFileNode(FileDatabaseNode node)
 	{

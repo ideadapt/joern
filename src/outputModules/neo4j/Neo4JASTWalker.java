@@ -6,8 +6,8 @@ import tools.index.SourceLanguage;
 
 public class Neo4JASTWalker extends IndexerASTWalker
 {	
-	Neo4JASTWalker(SourceLanguage sourceLanguage)
+	public Neo4JASTWalker()
 	{
-		astVisitor = new Neo4JASTNodeVisitor(sourceLanguage);
+		astVisitor = new Neo4JASTNodeVisitor();
 	}
 }

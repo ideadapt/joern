@@ -10,7 +10,6 @@ public class FileNameMatcher
 	
 	public void setFilenameFilter(String pattern)
 	{
-		// TODO Auto-generated method stub	
 		matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
 	}
 
