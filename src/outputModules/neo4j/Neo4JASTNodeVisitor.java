@@ -22,16 +22,14 @@ import tools.index.SourceLanguage;
 public class Neo4JASTNodeVisitor extends ASTNodeVisitor
 {
 
-	public Neo4JASTNodeVisitor(SourceLanguage sourceLanguage) {
-		this.sourceLanguage = sourceLanguage;
-	}
-
+	@Override
 	public void visit(FunctionDef node)
 	{
-		ASTNodeImporter importer = new FunctionImporter(sourceLanguage);
+		ASTNodeImporter importer = new FunctionImporter(SourceLanguage.C);
 		importNode(importer, node);
 	}
 
+	@Override
 	public void visit(ClassDefStatement node)
 	{
 		ASTNodeImporter importer = new ClassDefImporter();
@@ -39,6 +37,7 @@ public class Neo4JASTNodeVisitor extends ASTNodeVisitor
 		visitClassDefContent(node, classNodeId);
 	}
 
+	@Override
 	public void visit(IdentifierDeclStatement node)
 	{
 		ASTNodeImporter importer = new DeclStmtImporter();
@@ -60,8 +59,7 @@ public class Neo4JASTNodeVisitor extends ASTNodeVisitor
 		if (contextStack.size() == 0)
 			return;
 		Long classId = contextStack.peek();
-		RelationshipType rel = DynamicRelationshipType
-				.withName(EdgeTypes.IS_CLASS_OF);
+		RelationshipType rel = DynamicRelationshipType.withName(EdgeTypes.IS_CLASS_OF);
 		Neo4JBatchInserter.addRelationship(classId, dstNodeId, rel, null);
 	}
 

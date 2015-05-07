@@ -2,27 +2,29 @@ package ast.functionDef;
 
 import ast.ASTNode;
 import ast.DummyNameNode;
+import ast.IASTNode;
+import ast.IFunctionNode;
 import ast.expressions.Identifier;
 import ast.statements.CompoundStatement;
 import ast.walking.ASTNodeVisitor;
 
-public class FunctionDef extends ASTNode
+public class FunctionDef extends ASTNode implements IFunctionNode
 {
 
 	public Identifier name = new DummyNameNode();
 	private ParameterList parameterList = new ParameterList();
 	// private ReturnType returnType = new DummyReturnType();
 
-	CompoundStatement content = new CompoundStatement();
+	ASTNode content = new CompoundStatement();
 
-	public CompoundStatement getContent()
+	public IASTNode getContent()
 	{
 		return content;
 	}
 
 	public void addStatement(ASTNode statement)
 	{
-		content.addStatement(statement);
+		((CompoundStatement)content).addStatement(statement);
 	}
 
 	public void addParameter(Parameter aParameter)
@@ -48,6 +50,11 @@ public class FunctionDef extends ASTNode
 		else
 			retval += " ()";
 		return retval;
+	}
+
+	@Override
+	public String getName() {
+		return name.getEscapedCodeStr();
 	}
 
 	public void setContent(CompoundStatement functionContent)

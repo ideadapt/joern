@@ -3,6 +3,7 @@ package outputModules.neo4j.importers;
 import java.util.Iterator;
 import java.util.List;
 
+import ast.IASTNode;
 import neo4j.batchInserter.Neo4JBatchInserter;
 
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -18,7 +19,7 @@ public class DeclStmtImporter extends ASTNodeImporter
 
 	DeclImporter declImporter = new DeclImporter();
 
-	public void addToDatabaseSafe(ASTNode node)
+	public void addToDatabaseSafe(IASTNode node)
 	{
 		DeclStmtDatabaseNode dbNode = new DeclStmtDatabaseNode();
 		dbNode.initialize(node);
@@ -27,7 +28,7 @@ public class DeclStmtImporter extends ASTNodeImporter
 		addDeclarations(node);
 	}
 
-	private void addDeclarations(ASTNode node)
+	protected void addDeclarations(IASTNode node)
 	{
 		IdentifierDeclStatement stmt = (IdentifierDeclStatement) node;
 		List<ASTNode> identifierDeclList = stmt.getIdentifierDeclList();

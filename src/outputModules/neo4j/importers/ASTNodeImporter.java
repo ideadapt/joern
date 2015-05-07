@@ -2,10 +2,12 @@ package outputModules.neo4j.importers;
 
 import java.util.Map;
 
+import ast.IASTNode;
 import neo4j.batchInserter.GraphNodeStore;
 import ast.ASTNode;
 import databaseNodes.DatabaseNode;
 import databaseNodes.FileDatabaseNode;
+import neo4j.batchInserter.Neo4JBatchInserter;
 
 public abstract class ASTNodeImporter
 {
@@ -24,7 +26,7 @@ public abstract class ASTNodeImporter
 		return mainNodeId;
 	}
 
-	public abstract void addToDatabaseSafe(ASTNode node);
+	public abstract void addToDatabaseSafe(IASTNode node);
 
 	protected void addMainNode(DatabaseNode dbNode)
 	{

@@ -9,12 +9,12 @@ import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.walking.ASTNodeVisitor;
 
-public class ASTNode
+public class ASTNode implements IASTNode
 {
 
 	protected String codeStr = null;
 	protected ParserRuleContext parseTreeNodeContext;
-	private CodeLocation location = new CodeLocation();
+	private ICodeLocation location = new CodeLocation();
 
 	private boolean isInCFG = false;
 
@@ -109,7 +109,7 @@ public class ASTNode
 		return location.toString();
 	}
 
-	public CodeLocation getLocation()
+	public ICodeLocation getLocation()
 	{
 		setLocation(parseTreeNodeContext);
 		return location;

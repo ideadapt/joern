@@ -1,7 +1,8 @@
-package tests.cfgCreation.ECMAScript5;
+package tests.ES5.cfg;
 
 import cfg.CFG;
 import org.junit.Test;
+import tests.ES5.ASTUtil;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -16,6 +17,8 @@ public class IfTests extends ECMAScript5CFGCreatorTest
 
 		System.out.println(getASTForCode(input).getEscapedCodeStr());
 		System.out.println(cfg.toString());
+
+		System.out.print(ASTUtil.getASTString(input));
 
 		assertEquals(4, cfg.size());
 	}

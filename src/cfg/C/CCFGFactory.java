@@ -3,6 +3,7 @@ package cfg.C;
 import java.util.Map.Entry;
 
 import ast.ASTNode;
+import ast.IFunctionNode;
 import ast.functionDef.FunctionDef;
 import ast.functionDef.Parameter;
 import ast.functionDef.ParameterList;
@@ -30,13 +31,14 @@ public class CCFGFactory extends CFGFactory
 	private static StructuredFlowVisitor structuredFlowVisitior = new StructuredFlowVisitor();
 	
 	@Override
-	public CFG newInstance(FunctionDef functionDefinition)
+	public CFG newInstance(IFunctionNode functionDefinitionIfc)
 	{
 		try
 		{
+			FunctionDef functionDefinition = (FunctionDef)functionDefinitionIfc;
 			CCFG function = newInstance();
 			CCFG parameterBlock = convert(functionDefinition.getParameterList());
-			CCFG functionBody = convert(functionDefinition.getContent());
+			CCFG functionBody = convert((ASTNode) functionDefinition.getContent());
 			parameterBlock.appendCFG(functionBody);
 			function.appendCFG(parameterBlock);
 			fixGotoStatements(function);

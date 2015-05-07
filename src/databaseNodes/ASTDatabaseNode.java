@@ -5,6 +5,7 @@ import java.util.Map;
 
 import ast.ASTNode;
 import ast.CodeLocation;
+import ast.ICodeLocation;
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.functionDef.Parameter;
@@ -61,13 +62,13 @@ public class ASTDatabaseNode extends DatabaseNode
 	private String getCorrectedLocationString()
 	{
 
-		CodeLocation funcLocation = currentFunction.getContentLocation();
-		CodeLocation location = astNode.getLocation();
+		ICodeLocation funcLocation = currentFunction.getContentLocation();
+		ICodeLocation location = astNode.getLocation();
 		
 		if(!(astNode instanceof Parameter) || (astNode instanceof ReturnType)){
-			location.startIndex += funcLocation.startIndex + 1;
-			location.startLine += funcLocation.startLine - 1;
-			location.stopIndex += funcLocation.startIndex + 1;
+			location.setStartIndex(location.getStartIndex() + funcLocation.getStartIndex() + 1);
+			location.setStartLine(location.getStartLine() + funcLocation.getStartLine() - 1);
+			location.setStopIndex(location.getStopIndex() + funcLocation.getStartIndex() + 1);
 		}
 			
 		return location.toString();

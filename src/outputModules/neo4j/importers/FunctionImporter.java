@@ -1,5 +1,6 @@
 package outputModules.neo4j.importers;
 
+import ast.IASTNode;
 import neo4j.batchInserter.Neo4JBatchInserter;
 
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -37,7 +38,7 @@ public class FunctionImporter extends ASTNodeImporter
 		cdgImporter = new CDGImporter(nodeStore);
 	}
 
-	public void addToDatabaseSafe(ASTNode node)
+	public void addToDatabaseSafe(IASTNode node)
 	{
 		try
 		{
@@ -50,9 +51,9 @@ public class FunctionImporter extends ASTNodeImporter
 		}
 		catch (RuntimeException ex)
 		{
-			// ex.printStackTrace();
-			System.err.println("Error adding function to database: "
-					+ ((FunctionDef) node).name.getEscapedCodeStr());
+			ex.printStackTrace();
+			String str = node.getEscapedCodeStr();
+			System.err.println("Error adding function to database: " + (str.substring(0, Math.min(30, str.length()))));
 			return;
 		}
 	}
@@ -66,7 +67,7 @@ public class FunctionImporter extends ASTNodeImporter
 		cfgImporter.setCurrentFunction(function);
 		udgImporter.setCurrentFunction(function);
 
-		astImporter.addASTToDatabase(function.getASTRoot());
+		astImporter.addASTToDatabase((ASTNode) function.getASTRoot());
 		cfgImporter.addCFGToDatabase(function.getCFG());
 		udgImporter.addUDGToDatabase(function.getUDG());
 		ddgImporter.addDDGToDatabase(function.getDDG());

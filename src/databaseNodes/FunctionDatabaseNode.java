@@ -3,12 +3,10 @@ package databaseNodes;
 import java.util.HashMap;
 import java.util.Map;
 
+import ast.*;
 import tools.index.SourceLanguage;
 import udg.CFGToUDGConverter;
 import udg.useDefGraph.UseDefGraph;
-import ast.ASTNode;
-import ast.CodeLocation;
-import ast.functionDef.FunctionDef;
 import cdg.CDG;
 import cdg.CDGCreator;
 import cfg.ASTToCFGConverter;
@@ -21,17 +19,15 @@ import ddg.DefUseCFG.DefUseCFG;
 // Note: we currently use the FunctionDatabaseNode
 // as a container for the Function. That's not very
 // clean. We should have a sep. Function-Class.
-
 public class FunctionDatabaseNode extends DatabaseNode
 {
-	FunctionDef astRoot;
+	IFunctionNode astRoot;
 	CFG cfg;
 	UseDefGraph udg;
 	DDG ddg;
 	CDG cdg;
 
 	String signature;
-	String name;
 	
 	ASTToCFGConverter astToCFG;
 	CFGToUDGConverter cfgToUDG;
@@ -50,7 +46,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 	@Override
 	public void initialize(Object node)
 	{
-		astRoot = (FunctionDef) node;
+		astRoot = (IFunctionNode) node;
 		cfg = astToCFG.convert(astRoot);
 		udg = cfgToUDG.convert(cfg);
 		DefUseCFG defUseCFG = udgAndCfgToDefUseCFG.convert(cfg, udg);
@@ -67,16 +63,15 @@ public class FunctionDatabaseNode extends DatabaseNode
 		properties.put(NodeKeys.TYPE, "Function");
 		properties.put(NodeKeys.LOCATION, this.getLocation());
 		properties.put(NodeKeys.NAME, this.getName());
-		// properties.put("signature", this.getSignature());
 		return properties;
 	}
 
 	public String getName()
 	{
-		return astRoot.name.getEscapedCodeStr();
+		return astRoot.getName();
 	}
 
-	public ASTNode getASTRoot()
+	public IASTNode getASTRoot()
 	{
 		return astRoot;
 	}
@@ -106,7 +101,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 		return astRoot.getLocationString();
 	}
 	
-	public CodeLocation getContentLocation(){
+	public ICodeLocation getContentLocation(){
 		return astRoot.getContent().getLocation();
 	}
 	
@@ -115,7 +110,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 		return signature;
 	}
 
-	private void setSignature(FunctionDef node)
+	private void setSignature(IFunctionNode node)
 	{
 		signature = node.getFunctionSignature();
 	}

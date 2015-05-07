@@ -1,5 +1,6 @@
 lib/
 .testDB/
+neo4j-db/
 .joernIndex/
 testreport/
 

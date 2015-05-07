@@ -1,12 +1,11 @@
 package cfg;
 
-import ast.functionDef.FunctionDef;
-
+import ast.IFunctionNode;
 
 public class CFGFactory
 {
 	/* Implement this method for each language */
-	public CFG newInstance(FunctionDef functionDefinition)
+	public CFG newInstance(IFunctionNode functionDefinition)
 	{
 		return null;
 	}		

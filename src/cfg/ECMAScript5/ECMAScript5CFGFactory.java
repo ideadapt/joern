@@ -1,11 +1,8 @@
 package cfg.ECMAScript5;
 
-import ast.ASTNode;
-import ast.ECMAScriptASTNode.ECMAScriptASTNode;
-import ast.functionDef.FunctionDef;
-import cfg.C.CCFG;
+import ast.ES.ESASTNode;
+import ast.IFunctionNode;
 import cfg.CFGEdge;
-import cfg.ECMAScript5.StructuredFlowVisitor;
 import cfg.CFG;
 import cfg.CFGFactory;
 import cfg.nodes.ASTNodeContainer;
@@ -26,7 +23,7 @@ public class ECMAScript5CFGFactory extends CFGFactory {
     private static StructuredFlowVisitor structuredFlowVisitior = new StructuredFlowVisitor(new LexicalContext());
 
     @Override
-    public CFG newInstance(FunctionDef functionDefinition) {
+    public CFG newInstance(IFunctionNode functionDefinition) {
         return super.newInstance(functionDefinition);
     }
 
@@ -53,7 +50,7 @@ public class ECMAScript5CFGFactory extends CFGFactory {
     public static CFG newInstance(IfNode node){
         ECMAScript5CFG cfg = new ECMAScript5CFG();
 
-        CFGNode condition = new ASTNodeContainer(new ECMAScriptASTNode(node.getTest()));
+        CFGNode condition = new ASTNodeContainer(new ESASTNode(node.getTest()));
         cfg.addVertex(condition);
         cfg.addEdge(cfg.getEntryNode(), condition);
 
@@ -89,7 +86,7 @@ public class ECMAScript5CFGFactory extends CFGFactory {
             CFGNode last = block.getEntryNode();
             for (Node node : nodes)
             {
-                ECMAScriptASTNode esASTNode = new ECMAScriptASTNode(node);
+                ESASTNode esASTNode = new ESASTNode(node);
                 CFGNode container = new ASTNodeContainer(esASTNode);
                 block.addVertex(container);
                 block.addEdge(last, container);
