@@ -2,17 +2,17 @@ package tools.index;
 
 import java.nio.file.Path;
 
+import outputModules.neo4j.Neo4JASTWalker;
 import outputModules.neo4j.importers.DirectoryTreeImporter;
 import parsing.ANTLRParserDriver;
-import parsing.ModuleParser;
+import parsing.C.FileParser;
 import fileWalker.SourceFileListener;
-
+import parsing.FileParserInterface;
 
 public abstract class Indexer extends SourceFileListener
 {
-	protected ModuleParser parser;
+	protected FileParserInterface parser;
 	protected IndexerState state;
-	protected IndexerASTWalker astWalker;
 	protected DirectoryTreeImporter dirTreeImporter;
 	protected SourceLanguage sourceLanguage;
 
@@ -20,27 +20,30 @@ public abstract class Indexer extends SourceFileListener
 
 	protected abstract void initializeDirectoryImporter();
 
-	protected abstract void initializeWalker();
-
 	protected abstract void initializeDatabase();
 
 	protected abstract void shutdownDatabase();
 
 	protected void initializeParser(){
-		ANTLRParserDriver driver = null;
 		if(sourceLanguage == SourceLanguage.C){
-			driver = new parsing.C.Modules.ANTLRCModuleParserDriver();
+			ANTLRParserDriver driver = new parsing.C.Modules.ANTLRCModuleParserDriver();
+			parser = new FileParser(driver);
+			IndexerASTWalker astWalker = new Neo4JASTWalker();
+			astWalker.setIndexerState(state);
+			parser.addObserver(astWalker);
 		}else if (sourceLanguage == SourceLanguage.ECMAScript5){
-			driver = new parsing.ECMAScript5.ANTLRECMAScriptParserDriver();
+			parser = new parsing.ECMAScript5.FileParser();
+			outputModules.neo4j.ES5.Neo4JASTWalker astWalker = new outputModules.neo4j.ES5.Neo4JASTWalker();
+			astWalker.setState(state);
+			parser.addObserver(astWalker);
 		} else{
 			throw new IllegalArgumentException("source language not supported");
 		}
-		parser = new ModuleParser(driver);
 	}
 
 	protected void initializeIndexerState()
 	{
-		state = new IndexerState(this);
+		state = new IndexerState();
 	}
 	
 	public void setOutputDir(String anOutputDir)
@@ -57,7 +60,6 @@ public abstract class Indexer extends SourceFileListener
 	{
 		initializeIndexerState();
 		initializeDirectoryImporter();
-		initializeWalker();
 		initializeDatabase();
 		initializeParser();
 		connectComponents();
@@ -90,9 +92,7 @@ public abstract class Indexer extends SourceFileListener
 
 	private void connectComponents()
 	{
-		astWalker.setIndexerState(state);
 		dirTreeImporter.setState(state);
-		parser.addObserver(astWalker);
 	}
 
 }

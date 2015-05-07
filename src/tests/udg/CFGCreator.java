@@ -1,11 +1,5 @@
 package tests.udg;
 
-import java.util.Stack;
-
-import org.antlr.v4.runtime.ParserRuleContext;
-
-import parsing.ModuleParser;
-import parsing.C.Modules.ANTLRCModuleParserDriver;
 import ast.ASTNode;
 import ast.ASTNodeBuilder;
 import ast.functionDef.FunctionDef;
@@ -13,7 +7,12 @@ import ast.walking.ASTNodeVisitor;
 import ast.walking.ASTWalker;
 import cfg.ASTToCFGConverter;
 import cfg.CFG;
+import org.antlr.v4.runtime.ParserRuleContext;
+import parsing.C.Modules.ANTLRCModuleParserDriver;
+import parsing.FileParserInterface;
 import tools.index.SourceLanguage;
+
+import java.util.Stack;
 
 public class CFGCreator
 {
@@ -66,7 +65,7 @@ public class CFGCreator
 	public CFG getCFGForCode(String code)
 	{
 		ANTLRCModuleParserDriver driver = new ANTLRCModuleParserDriver();
-		ModuleParser parser = new ModuleParser(driver);
+		FileParserInterface parser = new parsing.C.FileParser(driver);
 		Walker walker = new Walker();
 		parser.addObserver(walker);
 		parser.parseString(code);

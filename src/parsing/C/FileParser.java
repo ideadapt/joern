@@ -1,18 +1,22 @@
-package parsing;
+package parsing.C;
+
+import ast.walking.ASTWalker;
+import parsing.ANTLRParserDriver;
+import parsing.FileParserInterface;
+import parsing.ParserException;
 
 import java.util.Observer;
 
-public class ModuleParser
-{
+public class FileParser implements FileParserInterface {
 	ANTLRParserDriver parserDriver;
 	
-	public ModuleParser(ANTLRParserDriver driver)
+	public FileParser(ANTLRParserDriver driver)
 	{
 		parserDriver = driver;
 	}
-	
-	public void parseFile(String filename)
-	{
+
+	@Override
+	public void parseFile(String filename){
 		System.out.println(filename);
 
 		try
@@ -25,17 +29,13 @@ public class ModuleParser
 		}
 	}
 
-	public void addObserver(Observer anObserver)
-	{
+	@Override
+	public void addObserver(Observer anObserver){
 		parserDriver.addObserver(anObserver);
 	}
-	
-	/*
-	 * Testing
-	 **/
-	
-	public void parseString(String code)
-	{
+
+	@Override
+	public void parseString(String code){
 		try
 		{
 			parserDriver.parseAndWalkString(code);
@@ -45,5 +45,4 @@ public class ModuleParser
 			System.err.println("Error parsing string.");
 		}
 	}
-
 }
