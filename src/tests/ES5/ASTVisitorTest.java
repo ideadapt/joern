@@ -18,8 +18,8 @@ import static org.junit.Assert.fail;
 @PrepareForTest(Neo4JBatchInserter.class)
 public class ASTVisitorTest
 {
-	private MockNodeStore nodeStore;
-	private MockASTNodeVisitor astVisitor;
+	private NodeStoreMock nodeStore;
+	private ASTNodeVisitorMock astVisitor;
 
 	@Before
 	public void prepare(){
@@ -27,8 +27,8 @@ public class ASTVisitorTest
 		// we'd better have a real object, thats adapted/delegated by GraphNodeStore
 		// then we could inject a mock Neo4JBatchInserter instance.
 		PowerMockito.mockStatic(Neo4JBatchInserter.class);
-		nodeStore = new MockNodeStore();
-		astVisitor = new MockASTNodeVisitor(nodeStore);
+		nodeStore = new NodeStoreMock();
+		astVisitor = new ASTNodeVisitorMock(nodeStore);
 	}
 
 	@Test
@@ -41,6 +41,36 @@ public class ASTVisitorTest
 		assertEquals(nodeStore.getNodes().size(), 2);
 		assertEquals(nodeStore.getNode(0).getClass(), DeclStmtDatabaseNode.class);
 		assertEquals(nodeStore.getNode(1).getClass(), DeclDatabaseNode.class);
+	}
+
+	@Test
+	public void testVisitGlobalScopeVarMultiDecl()
+	{
+		String code = "var a = 1, b = 2;";
+		ESASTNode node = ASTUtil.getASTForCode(code);
+		node.accept(astVisitor);
+
+		assertEquals(nodeStore.getNodes().size(), 4);
+		assertEquals(nodeStore.getNode(0).getClass(), DeclStmtDatabaseNode.class);
+		assertEquals(nodeStore.getNode(1).getClass(), DeclDatabaseNode.class);
+
+		assertEquals(nodeStore.getNode(2).getClass(), DeclStmtDatabaseNode.class);
+		assertEquals(nodeStore.getNode(3).getClass(), DeclDatabaseNode.class);
+	}
+
+	@Test
+	public void testVisitGlobalScopeMultiVarDecl()
+	{
+		String code = "var a = 1; var b = 2;";
+		ESASTNode node = ASTUtil.getASTForCode(code);
+		node.accept(astVisitor);
+
+		assertEquals(nodeStore.getNodes().size(), 4);
+		assertEquals(nodeStore.getNode(0).getClass(), DeclStmtDatabaseNode.class);
+		assertEquals(nodeStore.getNode(1).getClass(), DeclDatabaseNode.class);
+
+		assertEquals(nodeStore.getNode(2).getClass(), DeclStmtDatabaseNode.class);
+		assertEquals(nodeStore.getNode(3).getClass(), DeclDatabaseNode.class);
 	}
 
 }

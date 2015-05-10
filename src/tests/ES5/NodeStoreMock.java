@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by ideadapt on 07.05.15.
  */
-public class MockNodeStore extends GraphNodeStore {
+public class NodeStoreMock extends GraphNodeStore {
     Long id = 0l;
     List<Object> objects = new ArrayList<>();
 
