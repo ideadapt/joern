@@ -1,6 +1,7 @@
 package outputModules.neo4j.importers;
 
 import ast.IASTNode;
+import neo4j.batchInserter.GraphNodeStore;
 import neo4j.batchInserter.Neo4JBatchInserter;
 
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -15,6 +16,7 @@ import cfg.nodes.CFGNode;
 import databaseNodes.EdgeTypes;
 import databaseNodes.FileDatabaseNode;
 import databaseNodes.FunctionDatabaseNode;
+import org.neo4j.kernel.impl.nioneo.store.NodeStore;
 import tools.index.SourceLanguage;
 
 // Stays alive while importing a function into
@@ -27,10 +29,10 @@ public class FunctionImporter extends ASTNodeImporter
 	private final CDGImporter cdgImporter;
 	private final ASTImporter astImporter;
 	private final CFGImporter cfgImporter;
-	private final SourceLanguage sourceLanguage;
+	private SourceLanguage sourceLanguage;
 
-	public FunctionImporter(SourceLanguage sourceLanguage) {
-		this.sourceLanguage = sourceLanguage;
+	public FunctionImporter(GraphNodeStore nodeStore) {
+		this.nodeStore = nodeStore;
 		astImporter = new ASTImporter(nodeStore);
 		cfgImporter = new CFGImporter(nodeStore);
 		udgImporter = new UDGImporter(nodeStore);
@@ -91,8 +93,7 @@ public class FunctionImporter extends ASTNodeImporter
 
 	private void linkFunctionWithAST(FunctionDatabaseNode function)
 	{
-		RelationshipType rel = DynamicRelationshipType
-				.withName(EdgeTypes.IS_FUNCTION_OF_AST);
+		RelationshipType rel = DynamicRelationshipType.withName(EdgeTypes.IS_FUNCTION_OF_AST);
 
 		long functionId = nodeStore.getIdForObject(function);
 		long astNodeId = nodeStore.getIdForObject(function.getASTRoot());
@@ -103,8 +104,7 @@ public class FunctionImporter extends ASTNodeImporter
 
 	private void linkFunctionWithCFG(FunctionDatabaseNode function, CFG cfg)
 	{
-		RelationshipType rel = DynamicRelationshipType
-				.withName(EdgeTypes.IS_FUNCTION_OF_CFG);
+		RelationshipType rel = DynamicRelationshipType.withName(EdgeTypes.IS_FUNCTION_OF_CFG);
 		long functionId = nodeStore.getIdForObject(function);
 
 		CFGNode firstBlock = cfg.getEntryNode();
@@ -116,9 +116,7 @@ public class FunctionImporter extends ASTNodeImporter
 		}
 		catch (RuntimeException ex)
 		{
-			cfgRootId = nodeStore
-					.getIdForObject(((ASTNodeContainer) firstBlock)
-							.getASTNode());
+			cfgRootId = nodeStore.getIdForObject(((ASTNodeContainer) firstBlock).getASTNode());
 		}
 
 		Neo4JBatchInserter.addRelationship(functionId, cfgRootId, rel, null);
@@ -128,8 +126,7 @@ public class FunctionImporter extends ASTNodeImporter
 	private void linkFunctionToFileNode(FunctionDatabaseNode function,
 			FileDatabaseNode fileNode)
 	{
-		RelationshipType rel = DynamicRelationshipType
-				.withName(EdgeTypes.IS_FILE_OF);
+		RelationshipType rel = DynamicRelationshipType.withName(EdgeTypes.IS_FILE_OF);
 
 		long fileId = fileNode.getId();
 		long functionId = nodeStore.getIdForObject(function);
@@ -137,4 +134,7 @@ public class FunctionImporter extends ASTNodeImporter
 		Neo4JBatchInserter.addRelationship(fileId, functionId, rel, null);
 	}
 
+	public void setSourceLanguage(SourceLanguage language) {
+		this.sourceLanguage = language;
+	}
 }

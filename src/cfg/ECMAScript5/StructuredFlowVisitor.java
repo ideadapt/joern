@@ -21,13 +21,19 @@ class StructuredFlowVisitor extends NodeVisitor
 
 	@Override
 	public boolean enterVarNode(VarNode varNode) {
-		returnCFG = ECMAScript5CFGFactory.newInstance(varNode);
+		returnCFG = ES5CFGFactory.newInstance(varNode);
 		return super.enterVarNode(varNode);
 	}
 
 	@Override
 	public boolean enterIfNode(IfNode ifNode) {
-		returnCFG = ECMAScript5CFGFactory.newInstance(ifNode);
+		returnCFG = ES5CFGFactory.newInstance(ifNode);
+		return false;
+	}
+
+	@Override
+	public boolean enterBlock(Block block) {
+		returnCFG = ES5CFGFactory.newInstance(block);
 		return false;
 	}
 

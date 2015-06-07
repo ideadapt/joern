@@ -1,7 +1,9 @@
 package outputModules.neo4j;
 
+import neo4j.batchInserter.GraphNodeStore;
 import neo4j.batchInserter.Neo4JBatchInserter;
 
+import neo4j.traversals.batchInserter.Function;
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.RelationshipType;
 
@@ -25,7 +27,8 @@ public class Neo4JASTNodeVisitor extends ASTNodeVisitor
 	@Override
 	public void visit(FunctionDef node)
 	{
-		ASTNodeImporter importer = new FunctionImporter(SourceLanguage.C);
+		ASTNodeImporter importer = new FunctionImporter(new GraphNodeStore());
+		((FunctionImporter)importer).setSourceLanguage(SourceLanguage.C);
 		importNode(importer, node);
 	}
 

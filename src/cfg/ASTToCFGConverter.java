@@ -1,9 +1,8 @@
 package cfg;
 
 import ast.IFunctionNode;
-import ast.functionDef.FunctionDef;
 import cfg.C.CCFGFactory;
-import cfg.ECMAScript5.ECMAScript5CFGFactory;
+import cfg.ECMAScript5.ES5CFGFactory;
 import tools.index.SourceLanguage;
 
 public class ASTToCFGConverter
@@ -20,7 +19,7 @@ public class ASTToCFGConverter
 		if(sourceLanguage == SourceLanguage.C){
 			factory = new CCFGFactory();
 		}else if(sourceLanguage == SourceLanguage.ECMAScript5) {
-			factory = new ECMAScript5CFGFactory();
+			factory = new ES5CFGFactory();
 		}
 
 		return factory.newInstance(node);

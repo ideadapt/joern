@@ -19,6 +19,11 @@ public class NodeStoreMock extends GraphNodeStore {
         objects.add(o);
     }
 
+    @Override
+    public void indexNode(Object o, Map<String, Object> properties) {
+        // do nothing
+    }
+
     public List<Object> getNodes() {
         return objects;
     }

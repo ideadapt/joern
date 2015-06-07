@@ -12,7 +12,7 @@ public class IfTests extends ECMAScript5CFGCreatorTest
 	@Test
 	public void testIf()
 	{
-		String input = "if(a) { log(a); }";
+		String input = "if(a && b) { log(a); }";
 		CFG cfg = getCFGForCode(input);
 
 		System.out.println(getASTForCode(input).getEscapedCodeStr());

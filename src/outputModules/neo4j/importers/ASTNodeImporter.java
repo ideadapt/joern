@@ -13,7 +13,7 @@ public abstract class ASTNodeImporter
 {
 
 	protected Long mainNodeId;
-	protected GraphNodeStore nodeStore = new GraphNodeStore();
+	protected GraphNodeStore nodeStore;
 	protected FileDatabaseNode curFile;
 
 	public void setCurrentFile(FileDatabaseNode fileNode)

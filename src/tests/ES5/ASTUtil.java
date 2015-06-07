@@ -21,7 +21,7 @@ public class ASTUtil {
         ScriptEnvironment e = new ScriptEnvironment(new Options(""), new PrintWriter(System.out , true), new PrintWriter(System.err , true));
         Parser p = new Parser(e, Source.sourceFor("testScript", input), new ErrorManager());
         FunctionNode fnNode = p.parse();
-        return new ESASTNode(fnNode.getBody());
+        return ESASTNode.create(fnNode.getBody());
     }
 
     public static String getASTString(String input){
@@ -40,6 +40,6 @@ public class ASTUtil {
             e1.printStackTrace();
         }
         FunctionNode fnNode = p.parse();
-        return new ESASTNode(fnNode.getBody());
+        return ESASTNode.create(fnNode.getBody());
     }
 }
