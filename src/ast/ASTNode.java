@@ -24,7 +24,7 @@ public class ASTNode implements IASTNode
 	public void addChild(ASTNode node)
 	{
 		if (children == null)
-			children = new LinkedList<ASTNode>();
+			children = new LinkedList<>();
 		node.setChildNumber(children.size());
 		children.add(node);
 	}
@@ -90,8 +90,7 @@ public class ASTNode implements IASTNode
 		if (codeStr != null)
 			return codeStr;
 
-		codeStr = escapeCodeStr(ParseTreeUtils
-				.childTokenString(parseTreeNodeContext));
+		codeStr = escapeCodeStr(ParseTreeUtils.childTokenString(parseTreeNodeContext));
 		return codeStr;
 	}
 

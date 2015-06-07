@@ -46,8 +46,7 @@ public class Neo4JBatchInserter
 		if (batchInserterConfig == null)
 			inserter = BatchInserters.inserter(databaseDirectory);
 		else
-			inserter = BatchInserters.inserter(databaseDirectory,
-					batchInserterConfig);
+			inserter = BatchInserters.inserter(databaseDirectory, batchInserterConfig);
 
 		initializeIndex();
 	}
@@ -107,8 +106,7 @@ public class Neo4JBatchInserter
 		}
 		catch (RuntimeException ex)
 		{
-			System.err
-					.println("Error while shutting down index provider. This may be harmless:");
+			System.err.println("Error while shutting down index provider. This may be harmless:");
 			// System.err.println(ex.getMessage());
 		}
 		inserter.shutdown();

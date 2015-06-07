@@ -65,8 +65,7 @@ public class CFGImporter
 			{
 				properties = statement.getProperties();
 			}
-			properties.put(NodeKeys.FUNCTION_ID,
-					nodeStore.getIdForObject(currentFunction));
+			properties.put(NodeKeys.FUNCTION_ID, nodeStore.getIdForObject(currentFunction));
 			nodeStore.addNeo4jNode(statement, properties);
 			nodeStore.indexNode(statement, properties);
 		}
@@ -88,14 +87,12 @@ public class CFGImporter
 		}
 	}
 
-	private void addFlowToLink(Object srcBlock, Object dstBlock,
-			Map<String, Object> properties)
+	private void addFlowToLink(Object srcBlock, Object dstBlock, Map<String, Object> properties)
 	{
 		long srcId = nodeStore.getIdForObject(srcBlock);
 		long dstId = nodeStore.getIdForObject(dstBlock);
 
-		RelationshipType rel = DynamicRelationshipType
-				.withName(EdgeTypes.FLOWS_TO);
+		RelationshipType rel = DynamicRelationshipType.withName(EdgeTypes.FLOWS_TO);
 		// Map<String, Object> properties = null;
 		Neo4JBatchInserter.addRelationship(srcId, dstId, rel, properties);
 	}

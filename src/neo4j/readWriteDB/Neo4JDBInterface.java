@@ -94,12 +94,10 @@ public class Neo4JDBInterface
 		graphDb.getRelationshipById(id).delete();
 	}
 
-	public static void addRelationship(long src, long dst,
-			RelationshipType relType, Map<String, Object> properties)
+	public static void addRelationship(long src, long dst, RelationshipType relType, Map<String, Object> properties)
 	{
 		Node node = graphDb.getNodeById(src);
-		Relationship rel = node.createRelationshipTo(graphDb.getNodeById(dst),
-				relType);
+		Relationship rel = node.createRelationshipTo(graphDb.getNodeById(dst), relType);
 		if (properties == null)
 			return;
 		for (Entry<String, Object> entry : properties.entrySet())

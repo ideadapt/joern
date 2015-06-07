@@ -83,11 +83,9 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 		{
 			for (CFGEdge edge1 : ingoingEdges(getExitNode()))
 			{
-				for (CFGEdge edge2 : otherCFG.outgoingEdges(otherCFG
-						.getEntryNode()))
+				for (CFGEdge edge2 : otherCFG.outgoingEdges(otherCFG.getEntryNode()))
 				{
-					addEdge(edge1.getSource(), edge2.getDestination(),
-							edge1.getLabel());
+					addEdge(edge1.getSource(), edge2.getDestination(), edge1.getLabel());
 				}
 			}
 			removeEdgesTo(getExitNode());
@@ -98,8 +96,7 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 		}
 	}
 
-	public void mountCFG(CFGNode branchNode, CFGNode mergeNode, CFG cfg,
-			String label)
+	public void mountCFG(CFGNode branchNode, CFGNode mergeNode, CFG cfg, String label)
 	{
 		if (!cfg.isEmpty())
 		{
@@ -124,8 +121,7 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 		for (CFGNode vertex : cfg.getVertices())
 		{
 			// do not add entry and exit node
-			if (!(vertex.equals(cfg.getEntryNode()) || vertex.equals(cfg
-					.getExitNode())))
+			if (!(vertex.equals(cfg.getEntryNode()) || vertex.equals(cfg.getExitNode())))
 			{
 				addVertex(vertex);
 			}
@@ -138,8 +134,7 @@ public class CFG extends AbstractTwoWayGraph<CFGNode, CFGEdge>
 		{
 			for (CFGEdge edge : cfg.outgoingEdges(vertex))
 			{
-				if (!(edge.getSource().equals(cfg.getEntryNode()) || edge
-						.getDestination().equals(cfg.getExitNode())))
+				if (!(edge.getSource().equals(cfg.getEntryNode()) || edge.getDestination().equals(cfg.getExitNode())))
 				{
 					addEdge(edge);
 				}

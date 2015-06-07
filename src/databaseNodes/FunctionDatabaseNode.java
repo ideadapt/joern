@@ -59,7 +59,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 	@Override
 	public Map<String, Object> createProperties()
 	{
-		Map<String, Object> properties = new HashMap<String, Object>();
+		Map<String, Object> properties = new HashMap<>();
 		properties.put(NodeKeys.TYPE, "Function");
 		properties.put(NodeKeys.LOCATION, this.getLocation());
 		properties.put(NodeKeys.NAME, this.getName());

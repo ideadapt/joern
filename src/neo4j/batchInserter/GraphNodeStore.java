@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class GraphNodeStore
 {
-	protected Map<Object, Long> objectToId = new HashMap<Object, Long>();
+	protected Map<Object, Long> objectToId = new HashMap<>();
 
 	public long getIdForObject(Object o)
 	{

@@ -58,8 +58,7 @@ public class ASTImporter
 		astDatabaseNode.setCurrentFunction(currentFunction);
 		Map<String, Object> properties = astDatabaseNode.createProperties();
 		
-		properties.put(NodeKeys.FUNCTION_ID,
-				nodeStore.getIdForObject(currentFunction));
+		properties.put(NodeKeys.FUNCTION_ID, nodeStore.getIdForObject(currentFunction));
 		nodeStore.addNeo4jNode(node, properties);
 
 		indexASTNode(node, properties);
@@ -73,8 +72,7 @@ public class ASTImporter
 
 	private void addASTLink(Object parent, ASTNode child)
 	{
-		RelationshipType rel = DynamicRelationshipType
-				.withName(EdgeTypes.IS_AST_PARENT);
+		RelationshipType rel = DynamicRelationshipType.withName(EdgeTypes.IS_AST_PARENT);
 
 		long parentId = nodeStore.getIdForObject(parent);
 		long childId = nodeStore.getIdForObject(child);
