@@ -1,13 +1,14 @@
 package ast.ES;
 
 import ast.ASTNode;
+import ast.CodeLocation;
 import jdk.nashorn.internal.ir.*;
 import jdk.nashorn.internal.ir.debug.PrintVisitor;
 import jdk.nashorn.internal.ir.visitor.NodeVisitor;
 
 import java.util.HashMap;
 
-public class ESASTNode extends ASTNode {
+public abstract class ESASTNode extends ASTNode {
 
     protected final Node node;
     protected HashMap<Integer, ESASTNode> astChildren = new HashMap<>();
@@ -61,6 +62,18 @@ public class ESASTNode extends ASTNode {
 
         ESASTNode other = (ESASTNode) o;
         return other.node.equals(this.node);
+    }
+
+    @Override
+    public String getLocationString() {
+        CodeLocation c = new CodeLocation();
+        if(node instanceof Statement){
+            c.setStartLine(((Statement) node).getLineNumber());
+        }
+        c.setStartIndex(node.getStart());
+        c.setStopIndex(node.getFinish());
+
+        return c.toString();
     }
 
     public void accept(NodeVisitor visitor){

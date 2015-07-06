@@ -28,7 +28,7 @@ public class ASTDatabaseNode extends DatabaseNode
 	public Map<String, Object> createProperties()
 	{
 
-		Map<String, Object> properties = new HashMap<String, Object>();
+		Map<String, Object> properties = new HashMap<>();
 		properties.put(NodeKeys.TYPE, astNode.getTypeAsString());
 
 		// Only calculate and store code strings for
@@ -37,7 +37,7 @@ public class ASTDatabaseNode extends DatabaseNode
 		properties.put(NodeKeys.CODE, astNode.getEscapedCodeStr());
 
 		if (astNode.isInCFG()){
-			properties.put(NodeKeys.IS_CFG_NODE, "True");			
+			properties.put(NodeKeys.IS_CFG_NODE, "True");
 			properties.put(NodeKeys.LOCATION, getCorrectedLocationString());
 		}
 			
@@ -50,11 +50,9 @@ public class ASTDatabaseNode extends DatabaseNode
 			if(operator != "")
 				properties.put(NodeKeys.OPERATOR, operator);
 		}
-			
-		// if(astNode.getChildCount() > 1){
+
 		String childNumStr = Integer.toString(astNode.getChildNumber());
 		properties.put(NodeKeys.CHILD_NUMBER, childNumStr);
-		// }
 
 		return properties;
 	}

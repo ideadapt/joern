@@ -10,3 +10,8 @@ be mined using complex queries formulated in the graph traversal
 languages Gremlin and Cypher.
 
 The documentation can be found [here](http://joern.readthedocs.org/en/latest/)
+
+
+TODO
+- set isCFGNode correctly, e.g. var nodes
+- add subgraph to esastvarnode (statement): decl --def--> identifier

@@ -123,8 +123,7 @@ public class FunctionImporter extends ASTNodeImporter
 
 	}
 
-	private void linkFunctionToFileNode(FunctionDatabaseNode function,
-			FileDatabaseNode fileNode)
+	private void linkFunctionToFileNode(FunctionDatabaseNode function, FileDatabaseNode fileNode)
 	{
 		RelationshipType rel = DynamicRelationshipType.withName(EdgeTypes.IS_FILE_OF);
 

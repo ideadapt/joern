@@ -26,9 +26,7 @@ public class FunctionDatabaseNode extends DatabaseNode
 	UseDefGraph udg;
 	DDG ddg;
 	CDG cdg;
-
 	String signature;
-	
 	ASTToCFGConverter astToCFG;
 	CFGToUDGConverter cfgToUDG;
 	CFGAndUDGToDefUseCFG udgAndCfgToDefUseCFG;

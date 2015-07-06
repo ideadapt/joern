@@ -54,11 +54,6 @@ public class ES5CFGFactory extends CFGFactory {
         return cfg;
     }
 
-    public static ECMAScript5CFG newInstance(String h){
-        System.out.printf("h" + h);
-        return newErrorInstance();
-    }
-
     public static CFG newInstance(IfNode node){
         ECMAScript5CFG cfg = new ECMAScript5CFG();
 
