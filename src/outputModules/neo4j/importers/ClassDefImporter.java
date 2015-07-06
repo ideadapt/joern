@@ -1,6 +1,7 @@
 package outputModules.neo4j.importers;
 
 import ast.IASTNode;
+import neo4j.batchInserter.GraphNodeStore;
 import neo4j.batchInserter.Neo4JBatchInserter;
 
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -14,6 +15,10 @@ import databaseNodes.FileDatabaseNode;
 
 public class ClassDefImporter extends ASTNodeImporter
 {
+
+	public ClassDefImporter(){
+		nodeStore = new GraphNodeStore();
+	}
 
 	public void addToDatabaseSafe(IASTNode node)
 	{

@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ast.IASTNode;
+import neo4j.batchInserter.GraphNodeStore;
 import neo4j.batchInserter.Neo4JBatchInserter;
 
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -16,8 +17,11 @@ import databaseNodes.EdgeTypes;
 
 public class DeclStmtImporter extends ASTNodeImporter
 {
-
 	DeclImporter declImporter = new DeclImporter();
+
+	public DeclStmtImporter(){
+		nodeStore = new GraphNodeStore();
+	}
 
 	public void addToDatabaseSafe(IASTNode node)
 	{
